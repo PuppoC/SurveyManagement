@@ -10,8 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +48,6 @@ public class LoginSignUpController {
 ////        StorageHandler.printDictionary(allAccounts);
 //
 //    }
-
-    private static boolean userExists(String username){
-
-
-        return false;
-
-    }
 
 
     @FXML

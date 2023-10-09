@@ -43,7 +43,7 @@ public class App extends Application {
         scene.setRoot(loadFXML(fxml));
     }
 
-    static <T> void setRootManual(String fxml, Class<T> controllerClass, T controllerInstance) throws IOException {
+    static <T> void setRootManual(String fxml, T controllerInstance) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
 
         if (controllerInstance != null) {

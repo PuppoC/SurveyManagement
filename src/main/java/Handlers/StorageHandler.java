@@ -1,18 +1,13 @@
 package Handlers;
 
 import java.io.*;
-import java.lang.reflect.Type;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Map;
 
-import Classes.Survey;
-import Classes.User;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class StorageHandler {
 
@@ -88,9 +83,9 @@ public class StorageHandler {
 
         if (Files.exists(folder) && Files.isDirectory(folder)) {
             try {
-                Files.walkFileTree(folder, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+                Files.walkFileTree(folder, EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new SimpleFileVisitor<>() {
 
-                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                         // Check if the file ends with .json
                             try (BufferedReader reader = Files.newBufferedReader(file)) {
 

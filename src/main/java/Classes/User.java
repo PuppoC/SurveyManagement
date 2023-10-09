@@ -2,7 +2,6 @@ package Classes;
 
 import Enums.AccessLevel;
 
-import java.util.Map;
 import java.util.UUID;
 
 public class User {

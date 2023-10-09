@@ -1,9 +1,7 @@
 package com.example.surveymanagement;
 
 import Classes.User;
-import Enums.AccessLevel;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -54,17 +52,6 @@ public class LandingPageController {
 
     }
 
-    @FXML
-    protected void goToCreateSurvey() throws IOException {
-
-        // Need special, to allow controller to be accessed when editing survey
-        try {
-            App.setRootManual("createsurvey",CreateSurveyController.class,new CreateSurveyController());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
 
 
 

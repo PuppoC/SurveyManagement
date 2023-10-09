@@ -4,7 +4,6 @@ import Enums.QuestionType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ public class QuestionElements {
 
     public QuestionElements() {
 
-        valueTextAreas = new ArrayList<TextArea>();
+        valueTextAreas = new ArrayList<>();
 
     }
 

@@ -5,10 +5,6 @@ import Classes.QuestionElements;
 import Classes.Survey;
 import Enums.QuestionType;
 import Handlers.StorageHandler;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,7 +15,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.*;
 
 import java.io.IOException;
@@ -59,7 +54,7 @@ public class CreateSurveyController {
         showBox(questionTemplate,false);//Hide templates
         showBox(valueTemplate,false);
 
-        allQuestionElements = new ArrayList<QuestionElements>();
+        allQuestionElements = new ArrayList<>();
 
         if (defaultSurvey != null){
 
@@ -83,6 +78,39 @@ public class CreateSurveyController {
 
     private final int deleteButtonBigSize = 250;
     private final int deleteButtonSmallSize = 60;
+
+
+    private void addValue(String value, VBox valueContainer, QuestionElements questionElements){
+
+        HBox valueTemplate = new HBox();
+
+        TextArea valueTextArea = new TextArea(value);
+        valueTextArea.setPrefSize(350,40);
+
+
+        Button valueDeleteButton = new Button("");
+        valueDeleteButton.setPrefSize(50,40);
+
+        ImageView valueDeleteButtonImageView = new ImageView(imagePath+"close.png");
+        valueDeleteButtonImageView.setFitWidth(20);
+        valueDeleteButtonImageView.setFitHeight(20);
+
+        valueDeleteButton.setGraphic(valueDeleteButtonImageView);
+
+        valueDeleteButton.setOnAction(deleteValueEvent -> {
+            valueContainer.getChildren().remove(valueTemplate);
+            questionElements.getValueTextAreas().remove(valueTextArea);
+
+        });
+
+
+        valueTemplate.getChildren().addAll(valueTextArea,valueDeleteButton);
+
+        valueContainer.getChildren().add(valueContainer.getChildren().size()-1, valueTemplate); // place in 2nd last order, that's why it's -1
+
+        questionElements.getValueTextAreas().add(valueTextArea);
+
+    }
 
     public void addQuestion(Question defaultQuestion){
 
@@ -145,7 +173,7 @@ public class CreateSurveyController {
         typeText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,12));
         typeText.setTextAlignment(TextAlignment.RIGHT);
 
-        ComboBox<QuestionType> typeComboBox = new ComboBox<QuestionType>();
+        ComboBox<QuestionType> typeComboBox = new ComboBox<>();
         typeComboBox.setPrefSize(400,30);
 
         typeComboBox.getItems().addAll(QuestionType.values());
@@ -177,58 +205,60 @@ public class CreateSurveyController {
 
         // CREATE VALUE TEMPLATE
         // CUSTOM EVENT, TO PASS IN DEFAULT VALUE
-        class AddValueEvent extends ActionEvent {
-            private String value;
+//        class AddValueEvent extends ActionEvent {
+//            private final String value;
+//
+//            public AddValueEvent(Object source, String value) {
+//                super(source, null);
+//                this.value = value;
+//            }
+//
+//            public String getCustomParameter() {
+//                return value;
+//            }
+//        }
 
-            public AddValueEvent(Object source, String value) {
-                super(source, null);
-                this.value = value;
-            }
+//        EventHandler<AddValueEvent> addValueEventHandler = addValueEvent -> {
 
-            public String getCustomParameter() {
-                return value;
-            }
-        }
-
-        EventHandler<AddValueEvent> addValueEventHandler = addValueEvent -> {
-
-            HBox valueTemplate = new HBox();
-
-            TextArea valueTextArea = new TextArea(addValueEvent.getCustomParameter());
-            valueTextArea.setPrefSize(350,40);
-
-
-            Button valueDeleteButton = new Button("");
-            valueDeleteButton.setPrefSize(50,40);
-
-            ImageView valueDeleteButtonImageView = new ImageView(imagePath+"close.png");
-            valueDeleteButtonImageView.setFitWidth(20);
-            valueDeleteButtonImageView.setFitHeight(20);
-
-            valueDeleteButton.setGraphic(valueDeleteButtonImageView);
-
-            valueDeleteButton.setOnAction(deleteValueEvent -> {
-                valueContainer.getChildren().remove(valueTemplate);
-                questionElements.getValueTextAreas().remove(valueTextArea);
-
-            });
-
-
-            valueTemplate.getChildren().addAll(valueTextArea,valueDeleteButton);
-
-            valueContainer.getChildren().add(valueContainer.getChildren().size()-1, valueTemplate); // place in 2nd last order, that's why it's -1
-
-            questionElements.getValueTextAreas().add(valueTextArea);
+//            HBox valueTemplate = new HBox();
+//
+//            TextArea valueTextArea = new TextArea(addValueEvent.getCustomParameter());
+//            valueTextArea.setPrefSize(350,40);
+//
+//
+//            Button valueDeleteButton = new Button("");
+//            valueDeleteButton.setPrefSize(50,40);
+//
+//            ImageView valueDeleteButtonImageView = new ImageView(imagePath+"close.png");
+//            valueDeleteButtonImageView.setFitWidth(20);
+//            valueDeleteButtonImageView.setFitHeight(20);
+//
+//            valueDeleteButton.setGraphic(valueDeleteButtonImageView);
+//
+//            valueDeleteButton.setOnAction(deleteValueEvent -> {
+//                valueContainer.getChildren().remove(valueTemplate);
+//                questionElements.getValueTextAreas().remove(valueTextArea);
+//
+//            });
+//
+//
+//            valueTemplate.getChildren().addAll(valueTextArea,valueDeleteButton);
+//
+//            valueContainer.getChildren().add(valueContainer.getChildren().size()-1, valueTemplate); // place in 2nd last order, that's why it's -1
+//
+//            questionElements.getValueTextAreas().add(valueTextArea);
 
 
 
-        };
+//        };
 
 
         addValueButton.setOnAction(actionEvent -> {
 
-            AddValueEvent customEvent = new AddValueEvent(this, "");// Default value is ""
-            addValueEventHandler.handle(customEvent); // FUTURE ME, SEE IF CAN USE WITHOUT THIS
+//            AddValueEvent customEvent = new AddValueEvent(this, "");// Default value is ""
+//            addValueEventHandler.handle(customEvent);
+
+            addValue("",valueContainer,questionElements);
 
         });
 
@@ -267,8 +297,10 @@ public class CreateSurveyController {
         // Fill in default values
         for (String value : defaultQuestion.getValues()){
 
-            AddValueEvent customEvent = new AddValueEvent(this, value);
-            addValueEventHandler.handle(customEvent);
+//            AddValueEvent customEvent = new AddValueEvent(this, value);
+//            addValueEventHandler.handle(customEvent);
+
+            addValue(value,valueContainer,questionElements);
 
         }
 
@@ -279,25 +311,22 @@ public class CreateSurveyController {
 
 
         // Listener for when value box changes question type
-        typeComboBox.valueProperty().addListener(new ChangeListener<QuestionType>() {
-            @Override
-            public void changed(ObservableValue<? extends QuestionType> observableValue, QuestionType changedFrom, QuestionType changedTo) {
+        typeComboBox.valueProperty().addListener((observableValue, changedFrom, changedTo) -> {
 
-                switch (changedTo) {
-                    case Paragraph -> {
-                        showBox(valueHBox, false);
-                        deleteQuestionButton.setPrefHeight(deleteButtonSmallSize);
-                        template.setPrefHeight(deleteButtonSmallSize);
-                    }
-                    case MCQ, Dropdown, Scale, Checkbox -> {
-                        showBox(valueHBox, true);
-                        deleteQuestionButton.setPrefHeight(deleteButtonBigSize);
-                        template.setPrefHeight(deleteButtonBigSize);
-                    }
-                    default -> System.out.println(changedTo.name() + " is not a registered question type!");
+            switch (changedTo) {
+                case Paragraph -> {
+                    showBox(valueHBox, false);
+                    deleteQuestionButton.setPrefHeight(deleteButtonSmallSize);
+                    template.setPrefHeight(deleteButtonSmallSize);
                 }
-
+                case MCQ, Dropdown, Scale, Checkbox -> {
+                    showBox(valueHBox, true);
+                    deleteQuestionButton.setPrefHeight(deleteButtonBigSize);
+                    template.setPrefHeight(deleteButtonBigSize);
+                }
+                default -> System.out.println(changedTo.name() + " is not a registered question type!");
             }
+
         });
 
         typeComboBox.setValue(defaultQuestion.getType());// set default option
@@ -343,7 +372,7 @@ public class CreateSurveyController {
         survey.setDesc(descTextArea.getText());
         survey.setCreatorId(Objects.requireNonNull(App.getSessionUser()).getId());
 
-        List<Question> allQuestions = new ArrayList<Question>();
+        List<Question> allQuestions = new ArrayList<>();
 
         //Convert question elements to just question, in string format
         allQuestionElements.forEach(questionElements -> allQuestions.add(getQuestionFromElements(questionElements)));
@@ -383,7 +412,7 @@ public class CreateSurveyController {
         question.setName(questionElements.getNameTextField().getText());
         question.setType(questionElements.getTypeComboBox().getValue());
 
-        List<String> allValues = new ArrayList<String>();
+        List<String> allValues = new ArrayList<>();
 
         List<TextArea> allValueTextAreas = questionElements.getValueTextAreas();
 
@@ -404,8 +433,6 @@ public class CreateSurveyController {
         if (result.isPresent() && (result.get() == ButtonType.OK)){
 //            App.setRoot(createMode ? "landingpage" : "surveylist");
             App.setRoot("surveylist");
-        } else {
-            return;
         }
 
 

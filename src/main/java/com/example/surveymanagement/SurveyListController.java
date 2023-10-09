@@ -128,7 +128,7 @@ public class SurveyListController {
                 editSurveyController.setDefaultSurvey(survey);
 
                 try {
-                    App.setRootManual("createsurvey",CreateSurveyController.class,editSurveyController);
+                    App.setRootManual("createsurvey",editSurveyController);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -227,7 +227,7 @@ public class SurveyListController {
 
         // Need special, to allow controller to be accessed when editing survey
         try {
-            App.setRootManual("createsurvey",CreateSurveyController.class,new CreateSurveyController());
+            App.setRootManual("createsurvey",new CreateSurveyController());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
