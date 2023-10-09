@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="960.0" spacing="10.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <GridPane prefHeight="93.0" prefWidth="920.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" onAction="#goToLandingPage" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/back.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+            <Text fx:id="titleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Creator" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+            </Text>
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmitButton" text="Submit">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/submit.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+         </children>
+      </GridPane>
+      <ScrollPane hbarPolicy="NEVER" prefHeight="500.0" prefWidth="920.0">
+         <content>
+            <VBox fx:id="questionContainer" alignment="CENTER" prefWidth="920.0" spacing="20.0">
+               <children>
+                  <VBox prefHeight="100.0" prefWidth="646.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="26.0" prefWidth="920.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Name:" textAlignment="RIGHT" wrappingWidth="200.0">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <TextField fx:id="nameTextField" prefHeight="25.0" prefWidth="400.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="80.0" prefWidth="920.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Description:" textAlignment="RIGHT" wrappingWidth="200.0">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Text>
+                              <TextArea fx:id="descTextArea" prefHeight="300.0" prefWidth="400.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox fx:id="questionTemplate" alignment="CENTER" prefHeight="250.0" prefWidth="920.0">
+                     <children>
+                        <VBox prefHeight="250.0" prefWidth="610.0">
+                           <children>
+                              <HBox alignment="CENTER" spacing="10.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" textAlignment="RIGHT" wrappingWidth="200.0">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField fx:id="formNameTextField1" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="400.0" />
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </HBox>
+                              <HBox alignment="CENTER" prefWidth="920.0" spacing="10.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" textAlignment="RIGHT" wrappingWidth="200.0">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <ComboBox fx:id="formTypeComboBox" prefHeight="25.0" prefWidth="400.0" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="valueHBox" alignment="CENTER" prefWidth="920.0" spacing="10.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Values:" textAlignment="RIGHT" wrappingWidth="200.0">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="400.0">
+                                       <content>
+                                          <VBox fx:id="valueContainer">
+                                             <children>
+                                                <HBox fx:id="valueTemplate">
+                                                   <children>
+                                                      <TextArea prefHeight="40.0" prefWidth="350.0" />
+                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0">
+                                                         <graphic>
+                                                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@Images/close.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                                <Button fx:id="addValueButton" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Add Value">
+                                                   <graphic>
+                                                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@Images/plus.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </VBox>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </VBox>
+                        <Button fx:id="deleteQuestionButton" mnemonicParsing="false" prefHeight="250.0" prefWidth="50.0">
+                           <graphic>
+                              <ImageView fitHeight="36.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@Images/trash.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </HBox>
+                  <Button fx:id="addQuestionButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onAddQuestionButton" prefHeight="30.0" prefWidth="920.0" text="Add Question">
+                     <graphic>
+                        <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@Images/plus.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </content>
+      </ScrollPane>
+   </children>
+</VBox>
