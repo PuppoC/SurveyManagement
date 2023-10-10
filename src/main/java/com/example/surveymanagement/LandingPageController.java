@@ -13,36 +13,25 @@ public class LandingPageController {
 
     @FXML Text welcomeText;
 
-
     @FXML
     public void initialize() {
 
         if (user != null){
-
             System.out.println("Already signed in, not initialising user object");
-
         }else{
-
             user = App.getSessionUser();
-
             if (user == null){
                 System.out.println("User not found, cannot go to landing page");
                 return;
-
             }
-
         }
 
         welcomeText.setText("Welcome, " + user.getUsername() + "!");
 
-
-
     }
-
 
     @FXML
     protected void goToSurveyList() throws IOException {App.setRoot("surveylist");}
-
 
     @FXML
     protected void logout() throws IOException {
@@ -51,9 +40,6 @@ public class LandingPageController {
         App.setRoot("login");
 
     }
-
-
-
 
 
 }

@@ -25,7 +25,6 @@ public class App extends Application {
     private static Scene scene;
 
 
-
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -48,6 +47,8 @@ public class App extends Application {
 
         if (controllerInstance != null) {
             fxmlLoader.setController(controllerInstance);
+        }else{
+            System.err.println("No controller given when loading " + fxml + " manually!!");
         }
 
         Parent root = fxmlLoader.load();

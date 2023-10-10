@@ -21,14 +21,11 @@ public class QuestionElements {
     }
 
     public void setNameTextField(TextField nameTextField){this.nameTextField = nameTextField;}
-    public TextField getNameTextField(){return this.nameTextField;}
-
-
     public void setTypeComboBox(ComboBox<QuestionType> typeComboBox){this.typeComboBox = typeComboBox;}
+    // No need for setValueTextAreas(), the will be updated automatically after getting the whole TextArea List
+
+    public TextField getNameTextField(){return this.nameTextField;}
     public ComboBox<QuestionType> getTypeComboBox(){return this.typeComboBox;}
-
-
     public List<TextArea> getValueTextAreas(){return this.valueTextAreas;}
-
 
 }

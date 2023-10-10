@@ -34,8 +34,6 @@ public class SurveyListController {
     @FXML Button createSurveyButton;
     private static final String imagePath = "file:src/main/resources/com/example/surveymanagement/Images/";
 
-    private User user;
-
 
     private static void showNode(Node node, boolean value){
 
@@ -66,7 +64,7 @@ public class SurveyListController {
 
         showNode(surveyTemplate,false);
 
-        user = App.getSessionUser();
+        User user = App.getSessionUser();
 
         assert user != null;
         if (user.getAccess() != AccessLevel.ADMIN){
@@ -76,15 +74,12 @@ public class SurveyListController {
 
         List<Survey> allSurveys = StorageHandler.getEachObjectInFolder("Surveys",Survey.class);
 
-        User user = App.getSessionUser();
-
         for (Survey survey : allSurveys){
 
             User creatorUser = StorageHandler.readObjectFromFile("Users/"+survey.getCreatorId(),User.class);
 
             GridPane template = new GridPane();
             template.setPrefSize(920,80);
-//            template.setGridLinesVisible(true);
             template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,null,null)));
             template.setPadding(new Insets(10,10,10,10));
 
@@ -120,8 +115,6 @@ public class SurveyListController {
 
             editButton.setOnAction(actionEvent -> {
 
-                //GO TO EDIT
-
                 CreateSurveyController editSurveyController = new CreateSurveyController();
 
                 // to allow create survey controller to prefill survey name, desc, etc
@@ -135,11 +128,13 @@ public class SurveyListController {
 
 
                 // PREFILL QUESTIONS
-                for (Question question: survey.getQuestions()){
+                survey.getQuestions().forEach(editSurveyController::addQuestion);
 
-                    editSurveyController.addQuestion(question);
-
-                }
+//                for (Question question: survey.getQuestions()){
+//
+//                    editSurveyController.addQuestion(question);
+//
+//                }
 
             });
 
@@ -157,34 +152,31 @@ public class SurveyListController {
 
                     deleteSuccess = StorageHandler.deleteFile("Surveys/"+survey.getId());
 
-
                 }else{
                     System.out.println("Delete survey abandoned");
                     return;
 
                 }
 
+                Alert resultAlert;
                 if (deleteSuccess){
 
-                    Alert resultAlert = new Alert(Alert.AlertType.INFORMATION);
+                    resultAlert = new Alert(Alert.AlertType.INFORMATION);
                     resultAlert.setHeaderText("Survey deleted successfully!");
-                    resultAlert.showAndWait();
 
                 }else{
 
-                    Alert resultAlert = new Alert(Alert.AlertType.WARNING);
+                    resultAlert = new Alert(Alert.AlertType.WARNING);
                     resultAlert.setHeaderText("Survey deleted unsuccessfully!");
-                    resultAlert.showAndWait();
 
                 }
+                resultAlert.showAndWait();
 
                 try {
                     App.setRoot("surveylist");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-
-
 
 
             });
@@ -196,7 +188,7 @@ public class SurveyListController {
             buttonsGrid.addColumn(2,editButton);
             buttonsGrid.addColumn(3,deleteButton);
 
-            assert user != null;
+
             if (user.getAccess() != AccessLevel.ADMIN){
 
                 showNode(resultsButton,false);
@@ -208,20 +200,14 @@ public class SurveyListController {
             template.add(buttonsGrid,1,0,1,2);
 
 
-
-
-
-
             surveyContainer.getChildren().add(template);
 
 
         }
-
     }
 
     @FXML
     protected void goToLandingPage() throws IOException {App.setRoot("landingpage");}
-
     @FXML
     protected void goToCreateSurvey() throws IOException {
 

@@ -12,8 +12,6 @@ public class Question {
     private List<String> values;
 
 
-
-
     public String getName(){return this.name;}
     public QuestionType getType(){return this.type;}
     public List<String> getValues(){return this.values;}

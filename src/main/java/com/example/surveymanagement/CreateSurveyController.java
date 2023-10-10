@@ -31,14 +31,10 @@ public class CreateSurveyController {
     @FXML Button submitButton;
 
     private List<QuestionElements> allQuestionElements;
-
     private static final String imagePath = "file:src/main/resources/com/example/surveymanagement/Images/";
-
     private Survey defaultSurvey;
     private boolean createMode = true; // CREATE MODE IS OPPOSITE OF EDIT MODE
 
-
-//    public void setEditMode(boolean editMode){this.editMode = editMode;}
 
     private static void showBox(HBox hbox, boolean value){
 
@@ -68,18 +64,13 @@ public class CreateSurveyController {
             createMode = false;
 
         }
-
-
     }
 
     public void setDefaultSurvey(Survey defaultSurvey){this.defaultSurvey = defaultSurvey;}
 
 
-
     private final int deleteButtonBigSize = 250;
     private final int deleteButtonSmallSize = 60;
-
-
     private void addValue(String value, VBox valueContainer, QuestionElements questionElements){
 
         HBox valueTemplate = new HBox();
@@ -201,62 +192,7 @@ public class CreateSurveyController {
         addValueButton.setPrefSize(400,30);
 
 
-
-
-        // CREATE VALUE TEMPLATE
-        // CUSTOM EVENT, TO PASS IN DEFAULT VALUE
-//        class AddValueEvent extends ActionEvent {
-//            private final String value;
-//
-//            public AddValueEvent(Object source, String value) {
-//                super(source, null);
-//                this.value = value;
-//            }
-//
-//            public String getCustomParameter() {
-//                return value;
-//            }
-//        }
-
-//        EventHandler<AddValueEvent> addValueEventHandler = addValueEvent -> {
-
-//            HBox valueTemplate = new HBox();
-//
-//            TextArea valueTextArea = new TextArea(addValueEvent.getCustomParameter());
-//            valueTextArea.setPrefSize(350,40);
-//
-//
-//            Button valueDeleteButton = new Button("");
-//            valueDeleteButton.setPrefSize(50,40);
-//
-//            ImageView valueDeleteButtonImageView = new ImageView(imagePath+"close.png");
-//            valueDeleteButtonImageView.setFitWidth(20);
-//            valueDeleteButtonImageView.setFitHeight(20);
-//
-//            valueDeleteButton.setGraphic(valueDeleteButtonImageView);
-//
-//            valueDeleteButton.setOnAction(deleteValueEvent -> {
-//                valueContainer.getChildren().remove(valueTemplate);
-//                questionElements.getValueTextAreas().remove(valueTextArea);
-//
-//            });
-//
-//
-//            valueTemplate.getChildren().addAll(valueTextArea,valueDeleteButton);
-//
-//            valueContainer.getChildren().add(valueContainer.getChildren().size()-1, valueTemplate); // place in 2nd last order, that's why it's -1
-//
-//            questionElements.getValueTextAreas().add(valueTextArea);
-
-
-
-//        };
-
-
         addValueButton.setOnAction(actionEvent -> {
-
-//            AddValueEvent customEvent = new AddValueEvent(this, "");// Default value is ""
-//            addValueEventHandler.handle(customEvent);
 
             addValue("",valueContainer,questionElements);
 
@@ -285,8 +221,6 @@ public class CreateSurveyController {
 
 
 
-
-
         ScrollPane valueScrollPane = new ScrollPane(valueContainer);
         valueScrollPane.setPrefSize(400,200);
         valueScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -297,15 +231,11 @@ public class CreateSurveyController {
         // Fill in default values
         for (String value : defaultQuestion.getValues()){
 
-//            AddValueEvent customEvent = new AddValueEvent(this, value);
-//            addValueEventHandler.handle(customEvent);
-
             addValue(value,valueContainer,questionElements);
 
         }
 
         questionSubBox.getChildren().addAll(nameHBox,typeHBox,valueHBox);
-
 
 
 
@@ -324,19 +254,17 @@ public class CreateSurveyController {
                     deleteQuestionButton.setPrefHeight(deleteButtonBigSize);
                     template.setPrefHeight(deleteButtonBigSize);
                 }
-                default -> System.out.println(changedTo.name() + " is not a registered question type!");
+                default -> System.err.println(changedTo.name() + " is not a registered question type!");
             }
 
         });
 
-        typeComboBox.setValue(defaultQuestion.getType());// set default option
+        typeComboBox.setValue(defaultQuestion.getType());// set default type
 
 
         questionContainer.getChildren().add(questionContainer.getChildren().size()-1,template); // place in 2nd last order, that's why it's -1
 
-
     }
-
 
     @FXML protected void onAddQuestionButton(){
 
@@ -391,8 +319,6 @@ public class CreateSurveyController {
 
         App.setRoot("surveylist");
 
-//        App.setRoot(createMode ? "landingpage" : "surveylist");
-
 
 //        for (Question question : allQuestions){
 //
@@ -401,8 +327,6 @@ public class CreateSurveyController {
 //            System.out.println("Values: " + question.getValues());
 //
 //        }
-
-
 
     }
 
@@ -416,7 +340,7 @@ public class CreateSurveyController {
 
         List<TextArea> allValueTextAreas = questionElements.getValueTextAreas();
 
-        // get each textarea text, and st ore it into another list in string format
+        // get each textarea text, and store it into another list in string format
         allValueTextAreas.forEach(textArea -> allValues.add(textArea.getText()));
 
         question.setValues(allValues);
@@ -431,13 +355,9 @@ public class CreateSurveyController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && (result.get() == ButtonType.OK)){
-//            App.setRoot(createMode ? "landingpage" : "surveylist");
             App.setRoot("surveylist");
         }
 
-
     }
-
-
 
 }

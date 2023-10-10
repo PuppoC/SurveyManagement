@@ -25,7 +25,6 @@ public class StorageHandler {
             if (!Files.exists(pathFilePath)) {
                 // Create a new file with an empty JSON object if it doesn't exist
                 System.err.println("Attempted to read non existent file: " + filePath);
-//                Files.createFile(pathFilePath);
                 return "{}";
             } else {
                 return new String(Files.readAllBytes(pathFilePath));
@@ -53,15 +52,6 @@ public class StorageHandler {
         }
     }
 
-//    private static String encodeNestedDictionary(Map<String, Map<String, String>> nestedDictionary) {
-//        return gson.toJson(nestedDictionary);
-//    }
-//
-//    private static Map<String, Map<String, String>> decodeNestedDictionary(String jsonString) {
-//        Type type = new TypeToken<Map<String, Map<String, String>>>() {}.getType();
-//        return gson.fromJson(jsonString, type);
-//    }
-
 
     public static <T> void writeObjectToFile(T object, String filePath) {
         String encodedObject = gson.toJson(object);
@@ -72,8 +62,6 @@ public class StorageHandler {
         String encodedObject = readJsonFromFile(filePath);
         return gson.fromJson(encodedObject, objectType);
     }
-
-
 
 
     public static <T> List<T> getEachObjectInFolder(String folderPath, Class<T> classType) {

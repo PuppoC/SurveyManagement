@@ -5,8 +5,6 @@ import java.util.UUID;
 
 public class Survey {
 
-
-
     private UUID id;
     private String name;
     private String desc;
