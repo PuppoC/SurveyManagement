@@ -96,7 +96,7 @@ public class SurveyListController {
             template.add(creatorText,0,1,1,1);
 
             Button completeSurveyButton = getButton("Complete Survey","checklist.png");
-            Button resultsButton = getButton("Results","eye.png");
+            Button resultsButton = getButton("Results","results.png");
             Button editButton = getButton("Edit","edit.png");
             Button deleteButton = getButton("Delete","trash.png");
 
