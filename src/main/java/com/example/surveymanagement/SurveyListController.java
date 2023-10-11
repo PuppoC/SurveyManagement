@@ -106,13 +106,29 @@ public class SurveyListController {
 
             completeSurveyButton.setOnAction(actionEvent -> {
 
-                //GO TO DO THE SURVEY
+                CompleteSurveyController completeSurveyController = new CompleteSurveyController();
+
+                completeSurveyController.setSurvey(survey);
+
+                try {
+                    App.setRootManual("completesurvey",completeSurveyController);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
             });
 
             resultsButton.setOnAction(actionEvent -> {
 
-                //GO TO RESULTS
+                SurveyResultsController surveyResultsController = new SurveyResultsController();
+
+                surveyResultsController.setSurvey(survey);
+
+                try {
+                    App.setRootManual("surveyresults",surveyResultsController);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 
             });
 

@@ -67,7 +67,7 @@
       </GridPane>
       <ScrollPane fx:id="questionScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="450.0" prefWidth="469.0">
          <content>
-            <VBox fx:id="questionContainer" alignment="CENTER" prefWidth="450.0" spacing="10.0">
+            <VBox fx:id="questionContainer" alignment="TOP_CENTER" prefWidth="450.0" spacing="10.0">
                <children>
                   <TextField fx:id="nameTextField" prefHeight="25.0" promptText="Survey Title" />
                   <TextArea fx:id="descTextArea" prefHeight="60.0" promptText="Survey Description" wrapText="true">
