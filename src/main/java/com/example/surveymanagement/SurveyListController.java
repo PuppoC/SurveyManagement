@@ -1,16 +1,13 @@
 package com.example.surveymanagement;
 
-import Classes.Question;
+
 import Classes.Survey;
 import Classes.User;
 import Enums.AccessLevel;
 import Handlers.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -24,14 +21,15 @@ import javafx.scene.text.Text;
 import javafx.scene.Node;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class SurveyListController {
 
     @FXML VBox surveyContainer;
     @FXML GridPane surveyTemplate;
     @FXML Button createSurveyButton;
+//    @FXML ComboBox<SortBy> sortByComboBox;
+    @FXML TextField searchTextField;
     private static final String imagePath = "file:src/main/resources/com/example/surveymanagement/Images/";
 
 
@@ -73,6 +71,8 @@ public class SurveyListController {
         }
 
         List<Survey> allSurveys = StorageHandler.getEachObjectInFolder("Surveys",Survey.class);
+
+        Map<Survey, GridPane> allSurveyTemplates = new HashMap<>();
 
         for (Survey survey : allSurveys){
 
@@ -199,17 +199,37 @@ public class SurveyListController {
 
             template.add(buttonsGrid,1,0,1,2);
 
+            allSurveyTemplates.put(survey,template);
 
             surveyContainer.getChildren().add(template);
 
 
         }
+
+        searchTextField.textProperty().addListener((observableValue, changedFrom, changedTo) -> {
+
+            for (Map.Entry<Survey, GridPane> entry : allSurveyTemplates.entrySet()) {
+                Survey survey = entry.getKey();
+                GridPane template = entry.getValue();
+
+                String surveyName = survey.getName();
+                surveyName = surveyName.toLowerCase();
+
+                changedTo = changedTo.toLowerCase();
+
+                showNode(template,surveyName.contains(changedTo));
+
+            }
+
+        });
+
+
     }
 
     @FXML
     protected void goToLandingPage() throws IOException {App.setRoot("landingpage");}
     @FXML
-    protected void goToCreateSurvey() throws IOException {
+    protected void goToCreateSurvey() {
 
         // Need special, to allow controller to be accessed when editing survey
         try {

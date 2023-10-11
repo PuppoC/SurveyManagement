@@ -6,8 +6,8 @@ import Classes.Survey;
 import Enums.QuestionType;
 import Handlers.StorageHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -18,11 +18,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 
 public class CreateSurveyController {
 
     @FXML VBox questionContainer;
+    @FXML ScrollPane questionScrollPane;
     @FXML HBox questionTemplate;
     @FXML HBox valueTemplate;
     @FXML TextField nameTextField;
@@ -36,21 +38,23 @@ public class CreateSurveyController {
     private boolean createMode = true; // CREATE MODE IS OPPOSITE OF EDIT MODE
 
 
-    private static void showBox(HBox hbox, boolean value){
+    private static void showNode(Node node, boolean value){
 
-        hbox.setManaged(value);
-        hbox.setVisible(value);
-        hbox.setDisable(!value);
+        node.setManaged(value);
+        node.setVisible(value);
+        node.setDisable(!value);
 
     }
 
     @FXML
     public void initialize() {
 
-        showBox(questionTemplate,false);//Hide templates
-        showBox(valueTemplate,false);
+        showNode(questionTemplate,false);//Hide templates
+        showNode(valueTemplate,false);
 
         allQuestionElements = new ArrayList<>();
+
+
 
         if (defaultSurvey != null){
 
@@ -77,7 +81,7 @@ public class CreateSurveyController {
 
         TextArea valueTextArea = new TextArea(value);
         valueTextArea.setPrefSize(350,40);
-
+        valueTextArea.setPromptText("Option");
 
         Button valueDeleteButton = new Button("");
         valueDeleteButton.setPrefSize(50,40);
@@ -111,7 +115,7 @@ public class CreateSurveyController {
         HBox template = new HBox();
         template.setAlignment(Pos.CENTER);
         template.setPrefSize(920,deleteButtonBigSize);
-        template.setPadding(new Insets(10,0,10,50)); // to take into account the delete button sticking out
+//        template.setPadding(new Insets(10,0,10,0));
         template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,null,null)));
 
 
@@ -137,53 +141,55 @@ public class CreateSurveyController {
 
 
 
-        HBox nameHBox = new HBox();
-        nameHBox.setAlignment(Pos.CENTER);
-        nameHBox.setSpacing(10);
+//        HBox nameHBox = new HBox();
+//        nameHBox.setAlignment(Pos.CENTER);
+//        nameHBox.setSpacing(10);
 
-        Text nameText = new Text("Question:");
-        nameText.setWrappingWidth(200);
-        nameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,12));
-        nameText.setTextAlignment(TextAlignment.RIGHT);
+//        Text nameText = new Text("Question:");
+//        nameText.setWrappingWidth(200);
+//        nameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,12));
+//        nameText.setTextAlignment(TextAlignment.RIGHT);
 
         TextField nameTextField = new TextField(defaultQuestion.getName());
         nameTextField.setPrefSize(400,30);
+        nameTextField.setPromptText("Question");
 
         questionElements.setNameTextField(nameTextField);
 
-        nameHBox.getChildren().addAll(nameText,nameTextField);
+//        nameHBox.getChildren().addAll(nameText,nameTextField);
 
 
 
-        HBox typeHBox = new HBox();
-        typeHBox.setAlignment(Pos.CENTER);
-        typeHBox.setSpacing(10);
+//        HBox typeHBox = new HBox();
+//        typeHBox.setAlignment(Pos.CENTER);
+//        typeHBox.setSpacing(10);
 
-        Text typeText = new Text("Type:");
-        typeText.setWrappingWidth(200);
-        typeText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,12));
-        typeText.setTextAlignment(TextAlignment.RIGHT);
+//        Text typeText = new Text("Type:");
+//        typeText.setWrappingWidth(200);
+//        typeText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,12));
+//        typeText.setTextAlignment(TextAlignment.RIGHT);
 
         ComboBox<QuestionType> typeComboBox = new ComboBox<>();
         typeComboBox.setPrefSize(400,30);
+        typeComboBox.setPromptText("Question Type");
 
         typeComboBox.getItems().addAll(QuestionType.values());
 
-        typeHBox.getChildren().addAll(typeText,typeComboBox);
+//        typeHBox.getChildren().addAll(typeText,typeComboBox);
 
         questionElements.setTypeComboBox(typeComboBox);
 
 
 
 
-        HBox valueHBox = new HBox();
-        valueHBox.setAlignment(Pos.CENTER);
-        valueHBox.setSpacing(10);
-
-        Text valueText = new Text("Values:");
-        valueText.setWrappingWidth(200);
-        valueText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,12));
-        valueText.setTextAlignment(TextAlignment.RIGHT);
+//        HBox valueHBox = new HBox();
+//        valueHBox.setAlignment(Pos.CENTER);
+//        valueHBox.setSpacing(10);
+//
+//        Text valueText = new Text("Values:");
+//        valueText.setWrappingWidth(200);
+//        valueText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,12));
+//        valueText.setTextAlignment(TextAlignment.RIGHT);
 
         VBox valueContainer = new VBox();
 
@@ -192,15 +198,17 @@ public class CreateSurveyController {
         addValueButton.setPrefSize(400,30);
 
 
-        addValueButton.setOnAction(actionEvent -> {
+        addValueButton.setOnAction(event -> addValue("", valueContainer, questionElements));
 
-            addValue("",valueContainer,questionElements);
+//        addValueButton.setOnAction(actionEvent -> {
+//
+//            addValue("",valueContainer,questionElements);
+//
+//        });
 
-        });
 
 
-
-        ImageView addValueButtonImage = new ImageView(imagePath+"plus.png");
+        ImageView addValueButtonImage = new ImageView(imagePath+"choice.png");
 
         addValueButtonImage.setFitHeight(20);
         addValueButtonImage.setFitWidth(20);
@@ -222,11 +230,13 @@ public class CreateSurveyController {
 
 
         ScrollPane valueScrollPane = new ScrollPane(valueContainer);
-        valueScrollPane.setPrefSize(400,200);
+        valueScrollPane.setPrefSize(400,200);// fixed size for values
+        valueScrollPane.setMinSize(400,200);
+        valueScrollPane.setMaxSize(400,200);
         valueScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
 
-        valueHBox.getChildren().addAll(valueText,valueScrollPane);
+//        valueHBox.getChildren().addAll(valueText,valueScrollPane);
 
         // Fill in default values
         for (String value : defaultQuestion.getValues()){
@@ -235,7 +245,9 @@ public class CreateSurveyController {
 
         }
 
-        questionSubBox.getChildren().addAll(nameHBox,typeHBox,valueHBox);
+//        questionSubBox.getChildren().addAll(nameHBox,typeHBox,valueHBox);
+        questionSubBox.getChildren().addAll(nameTextField,typeComboBox,valueScrollPane);
+
 
 
 
@@ -245,12 +257,12 @@ public class CreateSurveyController {
 
             switch (changedTo) {
                 case Paragraph -> {
-                    showBox(valueHBox, false);
+                    showNode(valueScrollPane, false);
                     deleteQuestionButton.setPrefHeight(deleteButtonSmallSize);
                     template.setPrefHeight(deleteButtonSmallSize);
                 }
                 case MCQ, Dropdown, Scale, Checkbox -> {
-                    showBox(valueHBox, true);
+                    showNode(valueScrollPane, true);
                     deleteQuestionButton.setPrefHeight(deleteButtonBigSize);
                     template.setPrefHeight(deleteButtonBigSize);
                 }
@@ -299,6 +311,7 @@ public class CreateSurveyController {
         survey.setName(nameTextField.getText());
         survey.setDesc(descTextArea.getText());
         survey.setCreatorId(Objects.requireNonNull(App.getSessionUser()).getId());
+        survey.setCreatedInstant(createMode ? Instant.now() : defaultSurvey.getCreatedInstant());
 
         List<Question> allQuestions = new ArrayList<>();
 

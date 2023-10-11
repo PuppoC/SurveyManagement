@@ -3,17 +3,25 @@ package Handlers;
 import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class StorageHandler {
 
     static final String filesLocation = "Storage";
 
-    static Gson gson = new Gson();
+    static Gson gson = new GsonBuilder()
+            .registerTypeAdapter(Instant.class, new InstantSerializer())
+            .registerTypeAdapter(Instant.class, new InstantDeserializer())
+            .create();
+
+
+
 
     private static String getStoragePath(String fileName){
         return filesLocation + "/" + fileName;}
