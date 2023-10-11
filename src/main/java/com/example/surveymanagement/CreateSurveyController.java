@@ -5,6 +5,7 @@ import Classes.QuestionElements;
 import Classes.Survey;
 import Enums.QuestionType;
 import Handlers.StorageHandler;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -129,11 +130,6 @@ public class CreateSurveyController {
 
         deleteQuestionButton.setGraphic(deleteQuestionButtonImageView);
 
-        deleteQuestionButton.setOnAction(event -> {
-            questionContainer.getChildren().remove(template);
-            allQuestionElements.remove(questionElements);
-        });
-
 
         VBox questionSubBox = new VBox();
 
@@ -253,8 +249,7 @@ public class CreateSurveyController {
 
 
         // Listener for when value box changes question type
-        typeComboBox.valueProperty().addListener((observableValue, changedFrom, changedTo) -> {
-
+        ChangeListener<QuestionType> typeListener = (observableValue, changedFrom, changedTo) -> {
             switch (changedTo) {
                 case Paragraph -> {
                     showNode(valueScrollPane, false);
@@ -268,10 +263,19 @@ public class CreateSurveyController {
                 }
                 default -> System.err.println(changedTo.name() + " is not a registered question type!");
             }
+        };
+        typeComboBox.valueProperty().addListener(typeListener);
 
-        });
 
         typeComboBox.setValue(defaultQuestion.getType());// set default type
+
+
+
+        deleteQuestionButton.setOnAction(event -> {
+            typeComboBox.valueProperty().removeListener(typeListener);
+            questionContainer.getChildren().remove(template);
+            allQuestionElements.remove(questionElements);
+        });
 
 
         questionContainer.getChildren().add(questionContainer.getChildren().size()-1,template); // place in 2nd last order, that's why it's -1

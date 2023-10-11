@@ -1,13 +1,16 @@
 package com.example.surveymanagement;
 
-
+import Classes.Question;
 import Classes.Survey;
 import Classes.User;
 import Enums.AccessLevel;
 import Handlers.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -144,7 +147,7 @@ public class SurveyListController {
                 confirmAlert.setHeaderText("Confirm to delete survey?");
                 confirmAlert.setContentText("Deleting: " + survey.getName());
 
-                boolean deleteSuccess = false;
+                boolean deleteSuccess;
 
                 Optional<ButtonType> confirmResult = confirmAlert.showAndWait();
                 if (confirmResult.isPresent() && (confirmResult.get() == ButtonType.OK)){
@@ -212,12 +215,7 @@ public class SurveyListController {
                 Survey survey = entry.getKey();
                 GridPane template = entry.getValue();
 
-                String surveyName = survey.getName();
-                surveyName = surveyName.toLowerCase();
-
-                changedTo = changedTo.toLowerCase();
-
-                showNode(template,surveyName.contains(changedTo));
+                showNode(template,survey.getName().toLowerCase().contains(changedTo.toLowerCase()));
 
             }
 
