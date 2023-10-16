@@ -36,6 +36,7 @@ public class LandingPageController {
     @FXML
     protected void logout() throws IOException {
 
+        App.setSessionUser(null);
         user = null;
         App.setRoot("login");
 
