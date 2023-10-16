@@ -85,7 +85,7 @@ public class LoginSignUpController {
 
         StorageHandler.writeObjectToFile(newUser,usersFolderName+"/"+newUser.getId().toString());
 
-        goToLandingPage(newUser);
+        goToSurveyList(newUser);
 
     }
 
@@ -117,17 +117,17 @@ public class LoginSignUpController {
         System.out.println("Valid account details, logging in");
         errorMsgText.setText("Valid credentials, logging in");
 
-        goToLandingPage(user);
+        goToSurveyList(user);
 
     }
 
 
-    private void goToLandingPage(User user){
+    private void goToSurveyList(User user){
 
         try{
 
             App.setSessionUser(user);
-            App.setRoot("landingpage");
+            App.setRoot("surveylist");
 
         } catch(IOException e){
 

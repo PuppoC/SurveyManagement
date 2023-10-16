@@ -364,7 +364,7 @@ public class CreateSurveyController {
         return question;
     }
 
-    @FXML protected void goToLandingPage() throws IOException {
+    @FXML protected void goToSurveyList() throws IOException {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to leave this page? Your survey will not be saved");

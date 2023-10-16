@@ -29,11 +29,11 @@
             <RowConstraints maxHeight="40.0" minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#goToLandingPage" prefHeight="21.0" prefWidth="600.0" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="21.0" prefWidth="600.0" text="Logout" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Images/back.png" />
+                        <Image url="@Images/logout.png" />
                      </image>
                   </ImageView>
                </graphic>

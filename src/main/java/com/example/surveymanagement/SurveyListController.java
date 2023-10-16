@@ -1,6 +1,5 @@
 package com.example.surveymanagement;
 
-import Classes.Question;
 import Classes.Survey;
 import Classes.User;
 import Enums.AccessLevel;
@@ -238,7 +237,12 @@ public class SurveyListController {
     }
 
     @FXML
-    protected void goToLandingPage() throws IOException {App.setRoot("landingpage");}
+    protected void logout() throws IOException {
+
+        App.setSessionUser(null);
+        App.setRoot("login");
+
+    }
     @FXML
     protected void goToCreateSurvey() {
 
