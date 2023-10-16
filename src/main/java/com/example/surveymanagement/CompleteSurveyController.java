@@ -12,7 +12,7 @@ public class CompleteSurveyController {
     public void setSurvey(Survey survey){this.survey = survey;}
 
     @FXML void initialize(){
-
+        System.out.println(survey.getName());
 
     }
 
