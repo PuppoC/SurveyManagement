@@ -26,7 +26,7 @@ public class LoginSignUpController {
     private static Map<String,UUID> usernamesAndUUIDs;
 
     @FXML
-    protected void onSignUpButton(){
+    protected void onSignUpButton() throws IOException {
 
         String signupUsername = usernameTextField.getText();
         String signupPassword = passwordField.getText();
@@ -90,7 +90,7 @@ public class LoginSignUpController {
     }
 
     @FXML
-    protected void onLoginButton(){
+    protected void onLoginButton() throws IOException {
 
         String loginUsername = usernameTextField.getText();
         String loginPassword = passwordField.getText();
@@ -122,18 +122,21 @@ public class LoginSignUpController {
     }
 
 
-    private void goToSurveyList(User user){
+    private void goToSurveyList(User user) throws IOException {
 
-        try{
+        App.setSessionUser(user);
+        App.setRoot("surveylist");
 
-            App.setSessionUser(user);
-            App.setRoot("surveylist");
-
-        } catch(IOException e){
-
-            System.out.println("Unable to go to landing page: " + e.getMessage());
-
-        }
+//        try{
+//
+//            App.setSessionUser(user);
+//            App.setRoot("surveylist");
+//
+//        } catch(IOException e){
+//
+//            System.out.println("Unable to go to landing page: " + e.getMessage());
+//
+//        }
 
     }
 

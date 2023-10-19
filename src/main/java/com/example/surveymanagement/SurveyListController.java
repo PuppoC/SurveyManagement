@@ -6,6 +6,7 @@ import Enums.AccessLevel;
 import Handlers.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -20,6 +21,10 @@ import javafx.scene.text.Text;
 import javafx.scene.Node;
 
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 
 public class SurveyListController {
@@ -31,6 +36,9 @@ public class SurveyListController {
     @FXML TextField searchTextField;
     private static final String imagePath = "file:src/main/resources/com/example/surveymanagement/Images/";
 
+    DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+            .appendPattern("dd/MM/yyyy HH:mm:ss")
+            .toFormatter();
 
     private static void showNode(Node node, boolean value){
 
@@ -45,7 +53,7 @@ public class SurveyListController {
         Button button = new Button(text);
         button.setContentDisplay(ContentDisplay.TOP);
         button.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,20));
-        button.setPrefWidth(400);// just to make it fill
+        button.setPrefWidth(800);// just to make it fill
 
         ImageView viewButtonImage = new ImageView(imagePath + buttonImagePath);
         viewButtonImage.setFitHeight(30);
@@ -66,6 +74,7 @@ public class SurveyListController {
         assert user != null;
         if (user.getAccess() != AccessLevel.ADMIN){
             showNode(createSurveyButton,false);
+            GridPane.setRowIndex(searchTextField,0);
 
         }
 
@@ -78,21 +87,27 @@ public class SurveyListController {
             User creatorUser = StorageHandler.readObjectFromFile("Users/"+survey.getCreatorId(),User.class);
 
             GridPane template = new GridPane();
+//            template.setGridLinesVisible(true);
+
             template.setPrefSize(920,80);
             template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,null,null)));
-            template.setPadding(new Insets(10,10,10,10));
+            template.setPadding(new Insets(20,20,20,20));
 
             Text nameText = new Text(survey.getName());
             nameText.setWrappingWidth(400);
             nameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,16));
 
-
             Text creatorText = new Text("Created by: " + creatorUser.getUsername());
             creatorText.setWrappingWidth(400);
             creatorText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
 
+            Text createdText = new Text("Created on: " + dateTimeFormatter.format(ZonedDateTime.ofInstant(survey.getCreatedInstant(), ZoneId.systemDefault())));
+            createdText.setWrappingWidth(400);
+            createdText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
+
             template.add(nameText,0,0,1,1);
             template.add(creatorText,0,1,1,1);
+            template.add(createdText,0,2,1,1);
 
             Button completeSurveyButton = getButton("Complete Survey","checklist.png");
             Button resultsButton = getButton("Results","results.png");
@@ -212,7 +227,7 @@ public class SurveyListController {
 
             }
 
-            template.add(buttonsGrid,1,0,1,2);
+            template.add(buttonsGrid,1,0,1,3);
 
             allSurveyTemplates.put(survey,template);
 
