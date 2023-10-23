@@ -16,22 +16,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="960.0" spacing="10.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="696.0" prefWidth="898.0" spacing="10.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <children>
-      <GridPane alignment="CENTER" prefHeight="40.0" prefWidth="920.0">
+      <GridPane alignment="CENTER" prefWidth="1180.0">
          <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="253.0" minWidth="10.0" prefWidth="234.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="596.0" minWidth="10.0" prefWidth="451.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="234.0" />
+            <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints maxHeight="246.0" minHeight="0.0" prefHeight="122.0" vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#goToSurveyList" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <Button fx:id="backButton" graphicTextGap="5.0" mnemonicParsing="false" onAction="#goToSurveyList" prefWidth="9999.0" text="Back" GridPane.columnIndex="2">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -51,7 +51,7 @@
                   <Insets bottom="10.0" />
                </GridPane.margin>
             </Text>
-            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmitButton" text="Submit">
+            <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmitButton" prefWidth="9999.0" text="Submit">
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -65,7 +65,7 @@
             </Button>
          </children>
       </GridPane>
-      <ScrollPane fx:id="questionScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="450.0" prefWidth="469.0">
+      <ScrollPane fx:id="questionScrollPane" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
          <content>
             <VBox fx:id="surveyContainer" alignment="TOP_CENTER" prefWidth="450.0" spacing="10.0">
                <children>
@@ -77,28 +77,28 @@
                   </TextArea>
                   <VBox fx:id="questionContainer" spacing="10.0">
                      <children>
-                        <GridPane fx:id="questionTemplate" prefHeight="250.0" prefWidth="918.0">
+                        <GridPane fx:id="questionTemplate" prefHeight="250.0">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="600.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <VBox fx:id="questionSub" prefHeight="250.0" prefWidth="400.0" GridPane.columnIndex="1">
+                              <VBox fx:id="questionSub" GridPane.columnIndex="1">
                                  <children>
-                                    <TextField fx:id="questionTextField" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="400.0" promptText="Question" />
-                                    <ComboBox fx:id="typeComboBox" prefHeight="25.0" prefWidth="400.0" promptText="Question Type" />
-                                    <ScrollPane fx:id="valueScrollPane" hbarPolicy="NEVER" maxHeight="200.0" minHeight="200.0" prefHeight="200.0" prefWidth="400.0">
+                                    <TextField fx:id="questionTextField" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="9999.0" promptText="Question" />
+                                    <ComboBox fx:id="typeComboBox" prefHeight="25.0" prefWidth="9999.0" promptText="Question Type" />
+                                    <ScrollPane fx:id="valueScrollPane" fitToWidth="true" hbarPolicy="NEVER" maxHeight="200.0" minHeight="200.0" prefHeight="200.0">
                                        <content>
-                                          <VBox fx:id="valueContainer">
+                                          <VBox fx:id="valueContainer" prefHeight="70.0">
                                              <children>
-                                                <HBox fx:id="valueTemplate">
+                                                <HBox fx:id="valueTemplate" fillHeight="false">
                                                    <children>
-                                                      <TextArea prefHeight="40.0" prefWidth="350.0" promptText="Option" />
-                                                      <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0">
+                                                      <TextArea prefHeight="40.0" prefWidth="9999999.0" promptText="Value" />
+                                                      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0">
                                                          <graphic>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -109,7 +109,7 @@
                                                       </Button>
                                                    </children>
                                                 </HBox>
-                                                <Button fx:id="addValueButton" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="400.0" text="Add Value">
+                                                <Button fx:id="addValueButton" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="9999.0" text="Add Value">
                                                    <graphic>
                                                       <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -150,7 +150,7 @@
                         </GridPane>
                      </children>
                   </VBox>
-                  <Button fx:id="addQuestionButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onAddQuestionButton" prefHeight="30.0" prefWidth="920.0" text="Add Question">
+                  <Button fx:id="addQuestionButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onAddQuestionButton" prefHeight="30.0" prefWidth="999999.0" text="Add Question">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>

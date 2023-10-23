@@ -80,21 +80,25 @@ public class CreateSurveyController {
 
     private final int sideButtonWidth = 50;// CANNOT GO TO 40, value reorder button stack, 40 is too small for the button, will artificially make bigger
 
-    private void addValue(String value, VBox valueContainer, QuestionElements questionElements, ColumnConstraints col){
+    private void addValue(String value, VBox valueContainer, QuestionElements questionElements){
 
         HBox valueTemplate = new HBox();
 
+
         TextArea valueTextArea = new TextArea(value);
 
-        valueTextArea.setPrefSize(col.getPrefWidth()- (2 *sideButtonWidth),sideButtonWidth);
+        valueTextArea.setPrefSize(9999,sideButtonWidth);
+
         valueTextArea.setPromptText("Option");
 
         Button valueDeleteButton = new Button("");
         valueDeleteButton.setPrefSize(sideButtonWidth, sideButtonWidth);
+        valueDeleteButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+        valueDeleteButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         ImageView valueDeleteButtonImageView = new ImageView(imagePath+"close.png");
-        valueDeleteButtonImageView.setFitWidth(10);
-        valueDeleteButtonImageView.setFitHeight(10);
+        valueDeleteButtonImageView.setFitWidth(20);
+        valueDeleteButtonImageView.setFitHeight(20);
 
         valueDeleteButton.setGraphic(valueDeleteButtonImageView);
 
@@ -102,6 +106,8 @@ public class CreateSurveyController {
 
         VBox reorderVBoxSmall = new VBox();
         reorderVBoxSmall.setAlignment(Pos.CENTER_RIGHT);
+        reorderVBoxSmall.setPrefWidth(sideButtonWidth);
+        reorderVBoxSmall.setMinWidth(Region.USE_PREF_SIZE);
 
         ImageView upArrowImageViewSmall = new ImageView(imagePath+"up-arrow.png");
         upArrowImageViewSmall.setFitWidth(5);
@@ -253,12 +259,17 @@ public class CreateSurveyController {
 
 
 
-
         VBox questionSubBox = new VBox();
 
-        ColumnConstraints col1 = new ColumnConstraints(150); // Width of the first column
-        ColumnConstraints col2 = new ColumnConstraints(400); // Width of the second column
-        ColumnConstraints col3 = new ColumnConstraints(150); // Width of the second column
+
+        ColumnConstraints col1 = new ColumnConstraints(); // Width of the first column
+        col1.setPercentWidth(10);
+
+        ColumnConstraints col2 = new ColumnConstraints(); // Width of the second column
+        col2.setPercentWidth(80);
+
+        ColumnConstraints col3 = new ColumnConstraints(); // Width of the second column
+        col3.setPercentWidth(10);
 
         RowConstraints row1 = new RowConstraints(50); // Height of the first row
 
@@ -286,7 +297,7 @@ public class CreateSurveyController {
 
 
         TextField nameTextField = new TextField(defaultQuestion.getName());
-        nameTextField.setPrefSize(col2.getPrefWidth(),30);
+        nameTextField.setPrefSize(9999,30);
         nameTextField.setPromptText("Question");
 
         questionElements.setNameTextField(nameTextField);
@@ -295,7 +306,7 @@ public class CreateSurveyController {
 
 
         ComboBox<QuestionType> typeComboBox = new ComboBox<>();
-        typeComboBox.setPrefSize(col2.getPrefWidth(),30);
+        typeComboBox.setPrefSize(9999,30);
 
         typeComboBox.setPromptText("Question Type");
 
@@ -310,10 +321,11 @@ public class CreateSurveyController {
         VBox valueContainer = new VBox();
 
 
-        Button addValueButton = new Button("Add Value");
-        addValueButton.setPrefSize(col2.getPrefWidth(),30);
 
-        addValueButton.setOnAction(event -> addValue("", valueContainer, questionElements,col2));
+        Button addValueButton = new Button("Add Value");
+        addValueButton.setPrefSize(9999,30);
+
+        addValueButton.setOnAction(event -> addValue("", valueContainer, questionElements));
 
 
         ImageView addValueButtonImage = new ImageView(imagePath+"choice.png");
@@ -328,7 +340,8 @@ public class CreateSurveyController {
 
         ScrollPane valueScrollPane = new ScrollPane();
         valueScrollPane.setContent(valuesSectionContainer);
-        valueScrollPane.setPrefSize(col2.getPrefWidth(),200);// fixed size for values
+//        valueScrollPane.setPrefSize(9999,200);// fixed size for values
+        valueScrollPane.setFitToWidth(true);
         valueScrollPane.setMinHeight(200);
         valueScrollPane.setMaxHeight(200);
         valueScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -337,7 +350,7 @@ public class CreateSurveyController {
         // Fill in default values
         for (String value : defaultQuestion.getValues()){
 
-            addValue(value,valueContainer,questionElements,col2);
+            addValue(value,valueContainer,questionElements);
 
         }
 

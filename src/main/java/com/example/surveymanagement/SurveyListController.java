@@ -6,7 +6,6 @@ import Enums.AccessLevel;
 import Handlers.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -89,7 +88,9 @@ public class SurveyListController {
             GridPane template = new GridPane();
 //            template.setGridLinesVisible(true);
 
-            template.setPrefSize(920,80);
+            template.setPrefHeight(80);
+//            template.setPrefSize(920,80);
+//            template.setPrefSize(,80);
             template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,null,null)));
             template.setPadding(new Insets(20,20,20,20));
 

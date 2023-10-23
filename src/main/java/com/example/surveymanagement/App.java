@@ -30,7 +30,7 @@ public class App extends Application {
 
         System.out.println("Starting Application");
 
-        stage.setResizable(false);
+//        stage.setResizable(false);
 
         scene = new Scene(loadFXML("login"), 960,540);
         stage.setScene(scene);
