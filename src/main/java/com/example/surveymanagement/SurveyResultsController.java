@@ -1,5 +1,8 @@
 package com.example.surveymanagement;
 
+import Classes.Answer;
+import Classes.Question;
+import Classes.Submission;
 import Classes.Survey;
 import javafx.fxml.FXML;
 
@@ -13,6 +16,27 @@ public class SurveyResultsController {
 
     @FXML void initialize(){
         System.out.println(survey.getName());
+
+        for(Submission submission: survey.getSubmissions()){
+
+            System.out.println("________________________________");
+
+            for (Answer answer: submission.getAnswers()){
+
+                Question question = answer.getQuestion();
+
+                System.out.println("Question:" + question.getName());
+
+                Object actualAnswer = answer.getValue();
+                System.out.println("Answer:" +  actualAnswer.toString());
+
+            }
+
+
+
+
+        }
+
 
     }
 
