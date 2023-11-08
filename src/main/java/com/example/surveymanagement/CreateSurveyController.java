@@ -361,7 +361,7 @@ public class CreateSurveyController {
         // Listener for when value box changes question type
         ChangeListener<QuestionType> typeListener = (observableValue, changedFrom, changedTo) -> {
             switch (changedTo) {
-                case Paragraph -> {
+                case Paragraph, Numbers -> {
                     showNode(valueScrollPane, false);
                     showNode(reorderVBoxBig,false);
                     showNode(reorderVBoxSmall,true);
