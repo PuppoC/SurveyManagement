@@ -1,7 +1,7 @@
 package com.example.surveymanagement;
 
 import Classes.Question;
-import Classes.QuestionElements;
+import Classes.CreateQuestionElements;
 import Classes.Survey;
 import Enums.QuestionType;
 import Handlers.StorageHandler;
@@ -32,7 +32,7 @@ public class CreateSurveyController {
     @FXML Text titleText;
     @FXML Button submitButton;
 
-    private List<QuestionElements> allQuestionElements;
+    private List<CreateQuestionElements> allQuestionElements;
     private static final String imagePath = "file:src/main/resources/com/example/surveymanagement/Images/";
     private Survey defaultSurvey;
     private boolean createMode = true; // CREATE MODE IS OPPOSITE OF EDIT MODE
@@ -80,7 +80,7 @@ public class CreateSurveyController {
 
     private final int sideButtonWidth = 50;// CANNOT GO TO 40, value reorder button stack, 40 is too small for the button, will artificially make bigger
 
-    private void addValue(String value, VBox valueContainer, QuestionElements questionElements){
+    private void addValue(String value, VBox valueContainer, CreateQuestionElements questionElements){
 
         HBox valueTemplate = new HBox();
 
@@ -187,7 +187,7 @@ public class CreateSurveyController {
 
     public void addQuestion(Question defaultQuestion){
 
-        QuestionElements questionElements = new QuestionElements();
+        CreateQuestionElements questionElements = new CreateQuestionElements();
         allQuestionElements.add(questionElements);
 
         GridPane template = new GridPane();
@@ -369,7 +369,7 @@ public class CreateSurveyController {
 
                     row1.setPrefHeight(smallQuestionHeight);
                 }
-                case MCQ, Dropdown, Scale, Checkbox -> {
+                case MCQ, Dropdown, Checkbox -> {
                     showNode(valueScrollPane, true);
                     showNode(reorderVBoxBig,true);
                     showNode(reorderVBoxSmall,false);
@@ -455,7 +455,7 @@ public class CreateSurveyController {
     }
 
     // Change question elements class format to question class format
-    private static Question getQuestionFromElements(QuestionElements questionElements) {
+    private static Question getQuestionFromElements(CreateQuestionElements questionElements) {
         Question question = new Question();
         question.setName(questionElements.getNameTextField().getText());
         question.setType(questionElements.getTypeComboBox().getValue());

@@ -15,5 +15,9 @@ public class Answer {
     public void setQuestion(Question question) {this.question = question;}
     public void setValue(Object value) {this.value = value;}
 
+    public Answer(){
+        this.setValue("");//as reassurance
+    }
+
 
 }

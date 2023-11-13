@@ -6,6 +6,5 @@ public enum QuestionType {
     MCQ,
     Checkbox,
     Dropdown,
-    Scale
 
 }

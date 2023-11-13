@@ -8,13 +8,13 @@ import javafx.scene.control.TextField;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionElements {
+public class CreateQuestionElements {
 
     private TextField nameTextField;
     private ComboBox<QuestionType> typeComboBox;
     private List<TextArea> valueTextAreas;
 
-    public QuestionElements() {
+    public CreateQuestionElements() {
 
         valueTextAreas = new ArrayList<>();
 
