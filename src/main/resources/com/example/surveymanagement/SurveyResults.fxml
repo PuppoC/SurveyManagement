@@ -2,6 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -11,11 +14,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="960.0" spacing="20.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" prefHeight="540.0" prefWidth="960.0" spacing="10.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <GridPane prefHeight="71.0" prefWidth="920.0">
+   <GridPane prefWidth="920.0">
       <columnConstraints>
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -37,11 +40,92 @@
                <Font name="System Bold" size="16.0" />
             </font>
          </Button>
-         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Survey Results" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-            <font>
-               <Font name="System Bold" size="25.0" />
-            </font>
-         </Text>
       </children>
    </GridPane>
+   <Text fx:id="surveyTitleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textAlignment="CENTER">
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font>
+   </Text>
+   <Text fx:id="surveyDescriptionText" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" textAlignment="CENTER">
+      <font>
+         <Font size="16.0" />
+      </font>
+   </Text>
+   <TabPane tabClosingPolicy="UNAVAILABLE" tabMinWidth="300.0">
+     <tabs>
+       <Tab fx:id="individualTab" closable="false" styleClass="centered-tabs" text="Individual">
+            <content>
+               <VBox>
+                  <children>
+                     <GridPane prefWidth="920.0">
+                        <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints maxHeight="30.0" minHeight="5.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onNextButton" prefHeight="21.0" prefWidth="600.0" text="Next" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                              <graphic>
+                                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                                    <image>
+                                       <Image url="@Images/back.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                              <font>
+                                 <Font name="System Bold" size="16.0" />
+                              </font>
+                           </Button>
+                           <Button layoutX="470.0" layoutY="6.0" mnemonicParsing="false" onAction="#onPreviousButton" prefHeight="21.0" prefWidth="600.0" text="Previous">
+                              <graphic>
+                                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                       <Image url="@Images/back.png" />
+                                    </image>
+                                 </ImageView>
+                              </graphic>
+                              <font>
+                                 <Font name="System Bold" size="16.0" />
+                              </font>
+                           </Button>
+                        </children>
+                        <VBox.margin>
+                           <Insets bottom="10.0" top="10.0" />
+                        </VBox.margin>
+                     </GridPane>
+                     <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+                        <content>
+                           <VBox alignment="TOP_CENTER">
+                              <children>
+                                 <Text fx:id="userInfoText" layoutX="429.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                                    <font>
+                                       <Font name="System Italic" size="16.0" />
+                                    </font>
+                                 </Text>
+                                 <VBox fx:id="indivAnswersContainer" alignment="TOP_CENTER" fillWidth="false" spacing="10.0">
+                                    <VBox.margin>
+                                       <Insets top="20.0" />
+                                    </VBox.margin>
+                                 </VBox>
+                              </children>
+                           </VBox>
+                        </content>
+                     </ScrollPane>
+                  </children>
+               </VBox>
+            </content>
+         </Tab>
+       <Tab fx:id="summaryTab" closable="false" styleClass="centered-tabs" text="Summary">
+            <content>
+               <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+                  <content>
+                     <VBox fx:id="sumAnswersContainer" alignment="TOP_CENTER" spacing="10.0" />
+                  </content>
+               </ScrollPane>
+            </content></Tab>
+     </tabs>
+   </TabPane>
 </VBox>
