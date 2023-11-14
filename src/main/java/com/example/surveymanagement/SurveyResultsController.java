@@ -178,7 +178,7 @@ public class SurveyResultsController {
                         template.setAlignment(Pos.TOP_CENTER);
 
                         Text questionNameText = new Text(questionName);
-                        questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,20));
+                        questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,16));
 
                         VBox valueContainer = new VBox();
                         valueContainer.setAlignment(Pos.TOP_CENTER);
