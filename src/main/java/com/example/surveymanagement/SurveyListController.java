@@ -98,6 +98,10 @@ public class SurveyListController {
             nameText.setWrappingWidth(400);
             nameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,16));
 
+            Text noSubmissionsText = new Text("Submissions: " + survey.getSubmissions().size());
+            noSubmissionsText.setWrappingWidth(400);
+            noSubmissionsText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
+
             Text creatorText = new Text("Created by: " + creatorUser.getUsername());
             creatorText.setWrappingWidth(400);
             creatorText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
@@ -107,8 +111,9 @@ public class SurveyListController {
             createdText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
 
             template.add(nameText,0,0,1,1);
-            template.add(creatorText,0,1,1,1);
-            template.add(createdText,0,2,1,1);
+            template.add(noSubmissionsText,0,1,1,1);
+            template.add(creatorText,0,2,1,1);
+            template.add(createdText,0,3,1,1);
 
             Button completeSurveyButton = getButton("Complete Survey","checklist.png");
             Button resultsButton = getButton("Results","results.png");
