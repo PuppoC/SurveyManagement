@@ -1,6 +1,7 @@
 package com.example.surveymanagement;
 
 import Classes.*;
+import Enums.QuestionType;
 import Handlers.StorageHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,10 +20,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -167,75 +165,66 @@ public class SurveyResultsController {
 
             if (question != null){
 
-                switch (question.getType()){
+                if (Objects.requireNonNull(question.getType()) == QuestionType.Paragraph) {
+                    VBox template = new VBox();
+                    template.setFillWidth(true);
+                    template.setSpacing(5);
 
-                    case Paragraph -> {
+                    template.setAlignment(Pos.TOP_CENTER);
 
-                        VBox template = new VBox();
-                        template.setFillWidth(true);
-                        template.setSpacing(5);
+                    Text questionNameText = new Text(questionName);
+                    questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR, 16));
 
-                        template.setAlignment(Pos.TOP_CENTER);
+                    VBox valueContainer = new VBox();
+                    valueContainer.setAlignment(Pos.TOP_CENTER);
 
-                        Text questionNameText = new Text(questionName);
-                        questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,16));
+                    for (Answer answer : answers) {
 
-                        VBox valueContainer = new VBox();
-                        valueContainer.setAlignment(Pos.TOP_CENTER);
-
-                        for (Answer answer : answers){
-
-                            Text answerValue = new Text(answer.getValue().toString());
-                            valueContainer.getChildren().add(answerValue);
-
-                        }
-
-                        ScrollPane templateScroll = new ScrollPane(valueContainer);
-                        templateScroll.setFitToWidth(true);
-                        templateScroll.setPrefHeight(100);
-                        templateScroll.setMinHeight(Region.USE_PREF_SIZE);
-
-                        templateScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-                        template.getChildren().addAll(questionNameText,templateScroll);
-
-                        sumAnswersContainer.getChildren().add(template);
+                        Text answerValue = new Text(answer.getValue().toString());
+                        valueContainer.getChildren().add(answerValue);
 
                     }
-                    default -> {
 
-                        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+                    ScrollPane templateScroll = new ScrollPane(valueContainer);
+                    templateScroll.setFitToWidth(true);
+                    templateScroll.setPrefHeight(100);
+                    templateScroll.setMinHeight(Region.USE_PREF_SIZE);
 
-                        //sort the data
+                    templateScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+                    template.getChildren().addAll(questionNameText, templateScroll);
+
+                    sumAnswersContainer.getChildren().add(template);
+
+                } else {
+                    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+                    //sort the data
 //                        Map<Object, Long> answerCounts = answers.stream().collect(Collectors.groupingBy(Answer::getValue, Collectors.counting()));
 
-                        Map<Object, Long> answerCounts = answers.stream()
-                                .flatMap(answer -> {
-                                    if (answer.getValue() instanceof List) {
-                                        return ((List<?>) answer.getValue()).stream();
-                                    } else {
-                                        return Stream.of(answer.getValue());
-                                    }
-                                })
-                                .collect(Collectors.groupingBy(
-                                        value -> value,
-                                        Collectors.counting()
-                                ));
+                    Map<Object, Long> answerCounts = answers.stream()
+                            .flatMap(answer -> {
+                                if (answer.getValue() instanceof List) {
+                                    return ((List<?>) answer.getValue()).stream();
+                                } else {
+                                    return Stream.of(answer.getValue());
+                                }
+                            })
+                            .collect(Collectors.groupingBy(
+                                    value -> value,
+                                    Collectors.counting()
+                            ));
 
 
-                        answerCounts.forEach((response, count) -> pieChartData.add(new PieChart.Data(response.toString(), count)));
+                    answerCounts.forEach((response, count) -> pieChartData.add(new PieChart.Data(response.toString(), count)));
 
 
-                        PieChart chart = new PieChart(pieChartData);
-                        chart.setLegendVisible(true);
-                        chart.setLegendSide(Side.RIGHT);
-                        chart.setTitle(questionName);
+                    PieChart chart = new PieChart(pieChartData);
+                    chart.setLegendVisible(true);
+                    chart.setLegendSide(Side.RIGHT);
+                    chart.setTitle(questionName);
 
-                        sumAnswersContainer.getChildren().add(chart);
-
-                    }
-
-
+                    sumAnswersContainer.getChildren().add(chart);
                 }
 
 
