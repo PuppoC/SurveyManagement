@@ -3,6 +3,7 @@ package Classes;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Survey {
@@ -23,7 +24,7 @@ public class Survey {
     public void setName(String name){this.name = name;}
     public void setDesc(String desc){this.desc = desc;}
     public void setQuestions(List<Question> questions){this.questions = questions;}
-    public void setSubmissions(List<Submission> submissions){this.submissions = submissions;}
+//    public void setSubmissions(List<Submission> submissions){this.submissions = submissions;}
     public void setCreatorId(UUID creatorId){this.creatorId = creatorId;}
     public void setCreatedInstant(Instant createdInstant){this.createdInstant = createdInstant;}
 
@@ -36,6 +37,15 @@ public class Survey {
     public List<Submission> getSubmissions() {return this.submissions;}
     public UUID getCreatorId(){return this.creatorId;}
     public Instant getCreatedInstant(){return this.createdInstant;}
+
+    public Question getQuestionByName(String name){
+        for (Question question : questions){
+            if (Objects.equals(question.getName(), name)){
+                return question;
+            }
+        }
+        return null;
+    }
 
 
 }
