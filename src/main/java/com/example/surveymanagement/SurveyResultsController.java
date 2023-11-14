@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SurveyResultsController {
 
@@ -180,6 +181,7 @@ public class SurveyResultsController {
                         questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,20));
 
                         VBox valueContainer = new VBox();
+                        valueContainer.setAlignment(Pos.TOP_CENTER);
 
                         for (Answer answer : answers){
 
@@ -205,7 +207,20 @@ public class SurveyResultsController {
                         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
 
                         //sort the data
-                        Map<Object, Long> answerCounts = answers.stream().collect(Collectors.groupingBy(Answer::getValue, Collectors.counting()));
+//                        Map<Object, Long> answerCounts = answers.stream().collect(Collectors.groupingBy(Answer::getValue, Collectors.counting()));
+
+                        Map<Object, Long> answerCounts = answers.stream()
+                                .flatMap(answer -> {
+                                    if (answer.getValue() instanceof List) {
+                                        return ((List<?>) answer.getValue()).stream();
+                                    } else {
+                                        return Stream.of(answer.getValue());
+                                    }
+                                })
+                                .collect(Collectors.groupingBy(
+                                        value -> value,
+                                        Collectors.counting()
+                                ));
 
 
                         answerCounts.forEach((response, count) -> pieChartData.add(new PieChart.Data(response.toString(), count)));

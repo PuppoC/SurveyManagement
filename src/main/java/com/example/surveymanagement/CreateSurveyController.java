@@ -424,13 +424,29 @@ public class CreateSurveyController {
             System.out.println(createMode ? "Survey Creation Abandoned" : "Survey edit abandoned");
             return;
         }
+        Survey survey;
 
-        Survey survey = new Survey();
-        survey.setId(createMode ? UUID.randomUUID() : defaultSurvey.getId());
+
+        if (createMode){
+
+            survey = new Survey();
+            survey.setId(UUID.randomUUID());
+            survey.setCreatorId(Objects.requireNonNull(App.getSessionUser()).getId());
+            survey.setCreatedInstant(createMode ? Instant.now() : defaultSurvey.getCreatedInstant());
+
+        }else{
+            survey = defaultSurvey;
+        }
+
         survey.setName(nameTextField.getText());
         survey.setDesc(descTextArea.getText());
-        survey.setCreatorId(Objects.requireNonNull(App.getSessionUser()).getId());
-        survey.setCreatedInstant(createMode ? Instant.now() : defaultSurvey.getCreatedInstant());
+
+//        Survey survey = new Survey();
+//        survey.setId(createMode ? UUID.randomUUID() : defaultSurvey.getId());
+//        survey.setName(nameTextField.getText());
+//        survey.setDesc(descTextArea.getText());
+//        survey.setCreatorId(Objects.requireNonNull(App.getSessionUser()).getId());
+//        survey.setCreatedInstant(createMode ? Instant.now() : defaultSurvey.getCreatedInstant());
 
         List<Question> allQuestions = new ArrayList<>();
 
