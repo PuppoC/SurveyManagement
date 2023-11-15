@@ -38,14 +38,5 @@ public class Survey {
     public UUID getCreatorId(){return this.creatorId;}
     public Instant getCreatedInstant(){return this.createdInstant;}
 
-    public Question getQuestionByName(String name){
-        for (Question question : questions){
-            if (Objects.equals(question.getName(), name)){
-                return question;
-            }
-        }
-        return null;
-    }
-
 
 }

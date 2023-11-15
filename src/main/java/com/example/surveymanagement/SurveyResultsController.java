@@ -19,6 +19,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.beans.binding.Bindings;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -68,9 +69,9 @@ public class SurveyResultsController {
 
         User user = StorageHandler.readObjectFromFile("Users/" + submission.getUserId(), User.class);
 
-        if (user != null) {
-            userInfoText.setText(String.format("[%s/%s] Submitted by: %s", index+1, survey.getSubmissions().size(), user.getUsername()));
-        }
+
+        userInfoText.setText(String.format("[%s/%s] Submitted by: %s", index+1, survey.getSubmissions().size(), user.getId() == null? "Deleted User" : user.getUsername()));
+
 
         for (Answer answer : submission.getAnswers()) {
 
@@ -129,7 +130,7 @@ public class SurveyResultsController {
         //INIT SUMMARY SECTION
 
         //Group submissions by answers
-        Map<String, List<Answer>> allQuestionAnswers = new HashMap<>();
+        Map<UUID, HashMap<Object, Object>> allQuestionAnswers = new HashMap<>();
 
 
         for (Submission submission : survey.getSubmissions()){
@@ -142,16 +143,23 @@ public class SurveyResultsController {
 
                 Question question = answer.getQuestion();
 
-                if (allQuestionAnswers.containsKey(question.getName())){ //Question key already existing
+                if (allQuestionAnswers.containsKey(question.getId())){ //Question key already existing
 
-                    allQuestionAnswers.get(question.getName()).add(answer);
+                    List<Answer> answerList = (List<Answer>) allQuestionAnswers.get(question.getId()).get("AnswerList");
+                    //dangerous but works
+                    answerList.add(answer);
 
                 }else{
+
+                    HashMap<Object, Object> questionAnswerMap = new HashMap<>();
 
                     List<Answer> newAnswersList = new ArrayList<>();// New question key
                     newAnswersList.add(answer);
 
-                    allQuestionAnswers.put(question.getName(),newAnswersList);
+                    questionAnswerMap.put("AnswerList", newAnswersList);
+                    questionAnswerMap.put("Question", question);
+
+                    allQuestionAnswers.put(question.getId(),questionAnswerMap);
 
                 }
 
@@ -159,13 +167,18 @@ public class SurveyResultsController {
 
         }
 
-        for (Map.Entry<String, List<Answer>> entry : allQuestionAnswers.entrySet()) {
-            String questionName = entry.getKey();
-            List<Answer> answers = entry.getValue();
+        for (Map.Entry<UUID, HashMap<Object, Object>> entry : allQuestionAnswers.entrySet()) {
+            UUID questionId = entry.getKey();
 
-            Question question = survey.getQuestionByName(questionName);
+            HashMap<Object, Object> questionAnswerMap = entry.getValue();
+            List<Answer> answers = (List<Answer>) questionAnswerMap.get("AnswerList");
+            Question question = (Question) questionAnswerMap.get("Question");
 
-            if (question != null){
+
+
+//            Question question = survey.getQuestionByName(questionName);
+//
+//            if (question != null){
 
                 if (Objects.requireNonNull(question.getType()) == QuestionType.Paragraph) {
                     VBox template = new VBox();
@@ -174,7 +187,7 @@ public class SurveyResultsController {
 
                     template.setAlignment(Pos.TOP_CENTER);
 
-                    Text questionNameText = new Text(questionName);
+                    Text questionNameText = new Text(question.getName());
                     questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR, 16));
 
                     VBox valueContainer = new VBox();
@@ -222,7 +235,7 @@ public class SurveyResultsController {
 
 
                     PieChart chart = new PieChart(pieChartData);
-                    chart.setTitle(questionName);
+                    chart.setTitle(question.getName());
 //                    chart.setLegendVisible(true);
 //                    chart.setLegendSide(Side.RIGHT);
                     chart.setLabelLineLength(10);
@@ -236,12 +249,12 @@ public class SurveyResultsController {
                 }
 
 
-            }else{
-                System.err.println("Question not found by name! something went wrong");
+//            }else{
+//                System.err.println("Question not found by name! something went wrong");
 
             }
 
-        }
+//        }
 
 
     }
