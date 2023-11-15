@@ -1,10 +1,10 @@
 package com.example.surveymanagement;
 
-import Classes.Question;
-import Classes.CreateQuestionElements;
-import Classes.Survey;
-import Enums.QuestionType;
-import Handlers.StorageHandler;
+import classes.Question;
+import classes.CreateQuestionElements;
+import classes.Survey;
+import enums.QuestionType;
+import handlers.StorageHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,14 +23,27 @@ import java.util.*;
 
 public class CreateSurveyController {
 
-    @FXML VBox questionContainer;
-    @FXML ScrollPane questionScrollPane;
-    @FXML GridPane questionTemplate;
-    @FXML HBox valueTemplate;
-    @FXML TextField nameTextField;
-    @FXML TextArea descTextArea;
-    @FXML Text titleText;
-    @FXML Button submitButton;
+    @FXML
+    VBox questionContainer;
+    @FXML
+    ScrollPane questionScrollPane;
+    @FXML
+    GridPane questionTemplate;
+    @FXML
+    HBox valueTemplate;
+    @FXML
+    TextField nameTextField;
+    @FXML
+    TextArea descTextArea;
+    @FXML
+    Text titleText;
+
+    @FXML
+    Button backButton;
+    @FXML
+    Button submitButton;
+    @FXML
+    Button addQuestionButton;
 
     private List<CreateQuestionElements> allQuestionElements;
     private static final String imagePath = "file:src/main/resources/com/example/surveymanagement/Images/";
@@ -38,7 +51,7 @@ public class CreateSurveyController {
     private boolean createMode = true; // CREATE MODE IS OPPOSITE OF EDIT MODE
 
 
-    private static void showNode(Node node, boolean value){
+    private static void showNode(Node node, boolean value) {
 
         node.setManaged(value);
         node.setVisible(value);
@@ -50,15 +63,15 @@ public class CreateSurveyController {
     @FXML
     public void initialize() {
 
-        questionContainer.getChildren().remove(questionTemplate); // Instead of hide template, remove it completely
+        submitButton.setOnAction(actionEvent -> onSubmitButton());
+        backButton.setOnAction(actionEvent -> goToSurveyList());
+        addQuestionButton.setOnAction(actionEvent -> addQuestion(new Question()));
 
-//        showNode(questionTemplate,false);//Hide templates
-//        showNode(valueTemplate,false);
+        questionContainer.getChildren().remove(questionTemplate); // Instead of hide template, remove it completely
 
         allQuestionElements = new ArrayList<>();
 
-
-        if (defaultSurvey != null){
+        if (defaultSurvey != null) {
 
             nameTextField.setText(defaultSurvey.getName());
             descTextArea.setText(defaultSurvey.getDesc());
@@ -72,7 +85,9 @@ public class CreateSurveyController {
         }
     }
 
-    public void setDefaultSurvey(Survey defaultSurvey){this.defaultSurvey = defaultSurvey;}
+    public void setDefaultSurvey(Survey defaultSurvey) {
+        this.defaultSurvey = defaultSurvey;
+    }
 
 
     private final int bigQuestionHeight = 250;
@@ -80,14 +95,14 @@ public class CreateSurveyController {
 
     private final int sideButtonWidth = 50;// CANNOT GO TO 40, value reorder button stack, 40 is too small for the button, will artificially make bigger
 
-    private void addValue(String value, VBox valueContainer, CreateQuestionElements questionElements){
+    private void addValue(String value, VBox valueContainer, CreateQuestionElements questionElements) {
 
         HBox valueTemplate = new HBox();
 
 
         TextArea valueTextArea = new TextArea(value);
 
-        valueTextArea.setPrefSize(9999,sideButtonWidth);
+        valueTextArea.setPrefSize(9999, sideButtonWidth);
 
         valueTextArea.setPromptText("Option");
 
@@ -96,12 +111,11 @@ public class CreateSurveyController {
         valueDeleteButton.setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         valueDeleteButton.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-        ImageView valueDeleteButtonImageView = new ImageView(imagePath+"close.png");
+        ImageView valueDeleteButtonImageView = new ImageView(imagePath + "close.png");
         valueDeleteButtonImageView.setFitWidth(20);
         valueDeleteButtonImageView.setFitHeight(20);
 
         valueDeleteButton.setGraphic(valueDeleteButtonImageView);
-
 
 
         VBox reorderVBoxSmall = new VBox();
@@ -109,25 +123,25 @@ public class CreateSurveyController {
         reorderVBoxSmall.setPrefWidth(sideButtonWidth);
         reorderVBoxSmall.setMinWidth(Region.USE_PREF_SIZE);
 
-        ImageView upArrowImageViewSmall = new ImageView(imagePath+"up-arrow.png");
+        ImageView upArrowImageViewSmall = new ImageView(imagePath + "up-arrow.png");
         upArrowImageViewSmall.setFitWidth(5);
         upArrowImageViewSmall.setFitHeight(5);
 
 
-        ImageView downArrowImageViewSmall = new ImageView(imagePath+"up-arrow.png");
+        ImageView downArrowImageViewSmall = new ImageView(imagePath + "up-arrow.png");
         downArrowImageViewSmall.setFitWidth(5);
         downArrowImageViewSmall.setFitHeight(5);
 
 
         Button upButtonSmall = new Button("");
         upButtonSmall.setGraphic(upArrowImageViewSmall);
-        upButtonSmall.setPrefSize(sideButtonWidth, (double) sideButtonWidth /2);
+        upButtonSmall.setPrefSize(sideButtonWidth, (double) sideButtonWidth / 2);
 
 
         Button downButtonSmall = new Button("");
         downButtonSmall.setRotate(180);
         downButtonSmall.setGraphic(downArrowImageViewSmall);
-        downButtonSmall.setPrefSize(sideButtonWidth, (double) sideButtonWidth /2);
+        downButtonSmall.setPrefSize(sideButtonWidth, (double) sideButtonWidth / 2);
 
 
         EventHandler<ActionEvent> reorderUpHandler = event -> moveNodeUp(valueTemplate, valueContainer, questionElements.getValueTextAreas());
@@ -135,7 +149,6 @@ public class CreateSurveyController {
 
         upButtonSmall.setOnAction(reorderUpHandler);
         downButtonSmall.setOnAction(reorderDownHandler);
-
 
 
         valueDeleteButton.setOnAction(deleteValueEvent -> {
@@ -149,9 +162,9 @@ public class CreateSurveyController {
         });
 
 
-        reorderVBoxSmall.getChildren().addAll(upButtonSmall,downButtonSmall);
+        reorderVBoxSmall.getChildren().addAll(upButtonSmall, downButtonSmall);
 
-        valueTemplate.getChildren().addAll(reorderVBoxSmall,valueTextArea,valueDeleteButton);
+        valueTemplate.getChildren().addAll(reorderVBoxSmall, valueTextArea, valueDeleteButton);
 
         valueContainer.getChildren().add(valueContainer.getChildren().size(), valueTemplate);
 
@@ -185,20 +198,22 @@ public class CreateSurveyController {
     }
 
 
-    public void addQuestion(Question defaultQuestion){
+    public void addQuestion(Question defaultQuestion) {
 
         CreateQuestionElements questionElements = new CreateQuestionElements();
+        questionElements.setId(defaultQuestion.getId());
+
         allQuestionElements.add(questionElements);
 
         GridPane template = new GridPane();
         template.setAlignment(Pos.CENTER);
-        template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,null,null)));
+        template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
 
 
         Button deleteQuestionButton = new Button("");
         deleteQuestionButton.setPrefHeight(bigQuestionHeight);
 
-        ImageView deleteQuestionButtonImageView = new ImageView(imagePath+"trash.png");
+        ImageView deleteQuestionButtonImageView = new ImageView(imagePath + "trash.png");
         deleteQuestionButtonImageView.setFitWidth(30);
         deleteQuestionButtonImageView.setFitHeight(30);
 
@@ -208,55 +223,52 @@ public class CreateSurveyController {
         VBox reorderVBoxBig = new VBox();
         reorderVBoxBig.setAlignment(Pos.CENTER_RIGHT);
 
-        ImageView upArrowImageViewBig = new ImageView(imagePath+"up-arrow.png");
+        ImageView upArrowImageViewBig = new ImageView(imagePath + "up-arrow.png");
         upArrowImageViewBig.setFitWidth(10);
         upArrowImageViewBig.setFitHeight(10);
 
-        ImageView downArrowImageViewBig = new ImageView(imagePath+"up-arrow.png");
+        ImageView downArrowImageViewBig = new ImageView(imagePath + "up-arrow.png");
         downArrowImageViewBig.setFitWidth(10);
         downArrowImageViewBig.setFitHeight(10);
 
 
         Button upButtonBig = new Button("");
         upButtonBig.setGraphic(upArrowImageViewBig);
-        upButtonBig.setPrefSize(sideButtonWidth,(double) bigQuestionHeight /2);
+        upButtonBig.setPrefSize(sideButtonWidth, (double) bigQuestionHeight / 2);
 
         Button downButtonBig = new Button("");
         downButtonBig.setRotate(180);
         downButtonBig.setGraphic(downArrowImageViewBig);
-        downButtonBig.setPrefSize(sideButtonWidth,(double) bigQuestionHeight /2);
+        downButtonBig.setPrefSize(sideButtonWidth, (double) bigQuestionHeight / 2);
 
-        reorderVBoxBig.getChildren().addAll(upButtonBig,downButtonBig);
-
+        reorderVBoxBig.getChildren().addAll(upButtonBig, downButtonBig);
 
 
         HBox reorderVBoxSmall = new HBox();
         reorderVBoxSmall.setAlignment(Pos.CENTER_RIGHT);
 
-        ImageView upArrowImageViewSmall = new ImageView(imagePath+"up-arrow.png");
+        ImageView upArrowImageViewSmall = new ImageView(imagePath + "up-arrow.png");
         upArrowImageViewSmall.setFitWidth(5);
         upArrowImageViewSmall.setFitHeight(5);
 
 
-        ImageView downArrowImageViewSmall = new ImageView(imagePath+"up-arrow.png");
+        ImageView downArrowImageViewSmall = new ImageView(imagePath + "up-arrow.png");
         downArrowImageViewSmall.setFitWidth(5);
         downArrowImageViewSmall.setFitHeight(5);
 
 
         Button upButtonSmall = new Button("");
         upButtonSmall.setGraphic(upArrowImageViewSmall);
-        upButtonSmall.setPrefSize((double) sideButtonWidth /2,smallQuestionHeight);
+        upButtonSmall.setPrefSize((double) sideButtonWidth / 2, smallQuestionHeight);
 
 
         Button downButtonSmall = new Button("");
         downButtonSmall.setRotate(180);
         downButtonSmall.setGraphic(downArrowImageViewSmall);
-        downButtonSmall.setPrefSize((double) sideButtonWidth /2,smallQuestionHeight);
+        downButtonSmall.setPrefSize((double) sideButtonWidth / 2, smallQuestionHeight);
 
 
-        reorderVBoxSmall.getChildren().addAll(upButtonSmall,downButtonSmall);
-
-
+        reorderVBoxSmall.getChildren().addAll(upButtonSmall, downButtonSmall);
 
 
         VBox questionSubBox = new VBox();
@@ -273,13 +285,13 @@ public class CreateSurveyController {
 
         RowConstraints row1 = new RowConstraints(50); // Height of the first row
 
-        template.getColumnConstraints().addAll(col1,col2,col3);
+        template.getColumnConstraints().addAll(col1, col2, col3);
         template.getRowConstraints().addAll(row1);
 
-        GridPane.setConstraints(reorderVBoxBig,0,0);
-        GridPane.setConstraints(reorderVBoxSmall,0,0);
-        GridPane.setConstraints(questionSubBox,1,0);
-        GridPane.setConstraints(deleteQuestionButton,2,0);
+        GridPane.setConstraints(reorderVBoxBig, 0, 0);
+        GridPane.setConstraints(reorderVBoxSmall, 0, 0);
+        GridPane.setConstraints(questionSubBox, 1, 0);
+        GridPane.setConstraints(deleteQuestionButton, 2, 0);
 
 
         EventHandler<ActionEvent> reorderUpHandler = event -> moveNodeUp(template, questionContainer, allQuestionElements);
@@ -292,21 +304,18 @@ public class CreateSurveyController {
         downButtonBig.setOnAction(reorderDownHandler);
 
 
-        template.getChildren().addAll(reorderVBoxBig,reorderVBoxSmall,questionSubBox,deleteQuestionButton);
-
+        template.getChildren().addAll(reorderVBoxBig, reorderVBoxSmall, questionSubBox, deleteQuestionButton);
 
 
         TextField nameTextField = new TextField(defaultQuestion.getName());
-        nameTextField.setPrefSize(9999,30);
+        nameTextField.setPrefSize(9999, 30);
         nameTextField.setPromptText("Question");
 
         questionElements.setNameTextField(nameTextField);
 
 
-
-
         ComboBox<QuestionType> typeComboBox = new ComboBox<>();
-        typeComboBox.setPrefSize(9999,30);
+        typeComboBox.setPrefSize(9999, 30);
 
         typeComboBox.setPromptText("Question Type");
 
@@ -315,32 +324,28 @@ public class CreateSurveyController {
         questionElements.setTypeComboBox(typeComboBox);
 
 
-
         VBox valuesSectionContainer = new VBox();
 
         VBox valueContainer = new VBox();
 
 
-
         Button addValueButton = new Button("Add Value");
-        addValueButton.setPrefSize(9999,30);
+        addValueButton.setPrefSize(9999, 30);
 
         addValueButton.setOnAction(event -> addValue("", valueContainer, questionElements));
 
 
-        ImageView addValueButtonImage = new ImageView(imagePath+"choice.png");
+        ImageView addValueButtonImage = new ImageView(imagePath + "choice.png");
         addValueButton.setGraphic(addValueButtonImage);
         addValueButtonImage.setFitHeight(20);
         addValueButtonImage.setFitWidth(20);
 
 
-        valuesSectionContainer.getChildren().addAll(valueContainer,addValueButton);
-
+        valuesSectionContainer.getChildren().addAll(valueContainer, addValueButton);
 
 
         ScrollPane valueScrollPane = new ScrollPane();
         valueScrollPane.setContent(valuesSectionContainer);
-//        valueScrollPane.setPrefSize(9999,200);// fixed size for values
         valueScrollPane.setFitToWidth(true);
         valueScrollPane.setMinHeight(200);
         valueScrollPane.setMaxHeight(200);
@@ -348,14 +353,9 @@ public class CreateSurveyController {
 
 
         // Fill in default values
-        for (String value : defaultQuestion.getValues()){
+        for (String value : defaultQuestion.getValues()) addValue(value, valueContainer, questionElements);
 
-            addValue(value,valueContainer,questionElements);
-
-        }
-
-        questionSubBox.getChildren().addAll(nameTextField,typeComboBox,valueScrollPane);
-
+        questionSubBox.getChildren().addAll(nameTextField, typeComboBox, valueScrollPane);
 
 
         // Listener for when value box changes question type
@@ -363,16 +363,16 @@ public class CreateSurveyController {
             switch (changedTo) {
                 case Paragraph, Numbers -> {
                     showNode(valueScrollPane, false);
-                    showNode(reorderVBoxBig,false);
-                    showNode(reorderVBoxSmall,true);
+                    showNode(reorderVBoxBig, false);
+                    showNode(reorderVBoxSmall, true);
                     deleteQuestionButton.setPrefHeight(smallQuestionHeight);
 
                     row1.setPrefHeight(smallQuestionHeight);
                 }
                 case MCQ, Dropdown, Checkbox -> {
                     showNode(valueScrollPane, true);
-                    showNode(reorderVBoxBig,true);
-                    showNode(reorderVBoxSmall,false);
+                    showNode(reorderVBoxBig, true);
+                    showNode(reorderVBoxSmall, false);
                     deleteQuestionButton.setPrefHeight(bigQuestionHeight);
 
                     row1.setPrefHeight(bigQuestionHeight);
@@ -402,51 +402,38 @@ public class CreateSurveyController {
         });
 
 
-        questionContainer.getChildren().add(questionContainer.getChildren().size(),template); // place in 2nd last order, that's why it's -1
-
-    }
-
-    @FXML protected void onAddQuestionButton(){
-
-        addQuestion(new Question());
+        questionContainer.getChildren().add(questionContainer.getChildren().size(), template); // place in 2nd last order, that's why it's -1
 
     }
 
 
-    @FXML protected void onSubmitButton() throws IOException {
+    protected void onSubmitButton() {
 
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setHeaderText(createMode ? "Confirm to create survey?" : "Confirm survey edits?");
 
 
         Optional<ButtonType> confirmResult = confirmAlert.showAndWait();
-        if (confirmResult.isPresent() && (confirmResult.get() == ButtonType.CANCEL)){
+        if (confirmResult.isPresent() && (confirmResult.get() == ButtonType.CANCEL)) {
             System.out.println(createMode ? "Survey Creation Abandoned" : "Survey edit abandoned");
             return;
         }
         Survey survey;
 
 
-        if (createMode){
+        if (createMode) {
 
             survey = new Survey();
             survey.setId(UUID.randomUUID());
             survey.setCreatorId(Objects.requireNonNull(App.getSessionUser()).getId());
             survey.setCreatedInstant(createMode ? Instant.now() : defaultSurvey.getCreatedInstant());
 
-        }else{
+        } else {
             survey = defaultSurvey;
         }
 
         survey.setName(nameTextField.getText());
         survey.setDesc(descTextArea.getText());
-
-//        Survey survey = new Survey();
-//        survey.setId(createMode ? UUID.randomUUID() : defaultSurvey.getId());
-//        survey.setName(nameTextField.getText());
-//        survey.setDesc(descTextArea.getText());
-//        survey.setCreatorId(Objects.requireNonNull(App.getSessionUser()).getId());
-//        survey.setCreatedInstant(createMode ? Instant.now() : defaultSurvey.getCreatedInstant());
 
         List<Question> allQuestions = new ArrayList<>();
 
@@ -455,8 +442,7 @@ public class CreateSurveyController {
 
         survey.setQuestions(allQuestions);
 
-        StorageHandler.writeObjectToFile(survey,"Surveys/"+survey.getId().toString());
-
+        StorageHandler.writeObjectToFile(survey, "Surveys/" + survey.getId().toString());
 
 
         Alert createdAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -465,8 +451,11 @@ public class CreateSurveyController {
 
         System.out.println(createMode ? "Survey Created" : "Survey Edited");
 
-        App.setRoot("surveylist");
-
+        try {
+            App.setRoot("surveylist");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
@@ -488,17 +477,20 @@ public class CreateSurveyController {
         return question;
     }
 
-    @FXML protected void goToSurveyList() throws IOException {
+    protected void goToSurveyList() {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setHeaderText("Are you sure you want to leave this page? Your survey will not be saved");
 
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && (result.get() == ButtonType.OK)){
-            App.setRoot("surveylist");
+        if (result.isPresent() && (result.get() == ButtonType.OK)) {
+            try {
+                App.setRoot("surveylist");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
     }
-
 }

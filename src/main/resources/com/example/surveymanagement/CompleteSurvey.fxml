@@ -29,79 +29,60 @@
       <rowConstraints>
          <RowConstraints maxHeight="30.0" minHeight="5.0" prefHeight="27.0" vgrow="SOMETIMES" />
       </rowConstraints>
-      <children>
-         <Button fx:id="backButton" mnemonicParsing="false" onAction="#goToSurveyList" prefHeight="21.0" prefWidth="600.0" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-            <graphic>
-               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@Images/back.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-            <font>
-               <Font name="System Bold" size="16.0" />
-            </font>
-         </Button>
-         <Button fx:id="submitButton" mnemonicParsing="false" onAction="#onSubmitButton" prefWidth="9999.0" text="Submit">
-            <graphic>
-               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@Images/submit.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-            <font>
-               <Font name="System Bold" size="16.0" />
-            </font>
-         </Button>
-      </children>
+      <Button fx:id="backButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="600.0" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@Images/back.png" />
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="submitButton" mnemonicParsing="false" prefWidth="9999.0" text="Submit">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@Images/submit.png" />
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </GridPane>
    <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
-      <content>
-         <VBox alignment="TOP_CENTER">
-            <children>
-               <Text fx:id="surveyTitleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textAlignment="CENTER">
-                  <font>
-                     <Font name="System Bold" size="20.0" />
-                  </font>
-               </Text>
-               <Text fx:id="surveyDescriptionText" layoutX="448.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" textAlignment="CENTER">
-                  <font>
-                     <Font size="16.0" />
-                  </font>
-               </Text>
-               <VBox fx:id="questionsContainer" alignment="TOP_CENTER" fillWidth="false" spacing="10.0">
-                  <children>
-                     <VBox fx:id="paragraphTemplate" alignment="TOP_CENTER" prefWidth="300.0" spacing="5.0">
-                        <children>
-                           <Text fx:id="questionName" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" />
-                           <TextArea fx:id="questionValue" prefHeight="40.0" promptText="Answer" wrapText="true" />
-                        </children></VBox>
-                     <VBox fx:id="MCQTemplate" alignment="TOP_CENTER" layoutX="319.0" layoutY="10.0" prefWidth="300.0" spacing="5.0">
-                        <children>
-                           <Text fx:id="questionName1" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" />
-                           <VBox alignment="TOP_CENTER">
-                              <children>
-                                 <RadioButton mnemonicParsing="false" text="RadioButtehgwebhgeon" />
-                                 <RadioButton mnemonicParsing="false" text="RadioButton" />
-                                 <CheckBox mnemonicParsing="false" text="CheckBox" />
-                              </children>
-                           </VBox>
-                        </children>
-                     </VBox>
-                     <VBox fx:id="dropdownTemplate" alignment="TOP_CENTER" layoutX="319.0" layoutY="81.0" prefWidth="300.0" spacing="5.0">
-                        <children>
-                           <Text fx:id="questionName11" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" />
-                           <ComboBox prefWidth="9999.0" />
-                        </children>
-                     </VBox>
-                  </children>
-                  <VBox.margin>
-                     <Insets top="20.0" />
-                  </VBox.margin>
+      <VBox alignment="TOP_CENTER">
+         <Text fx:id="surveyTitleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textAlignment="CENTER">
+            <font>
+               <Font name="System Bold" size="20.0" />
+            </font>
+         </Text>
+         <Text fx:id="surveyDescriptionText" layoutX="448.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" textAlignment="CENTER">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Text>
+         <VBox fx:id="questionsContainer" alignment="TOP_CENTER" fillWidth="false" spacing="10.0">
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin>
+            <VBox fx:id="paragraphTemplate" alignment="TOP_CENTER" prefWidth="300.0" spacing="5.0">
+               <Text fx:id="questionName" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" />
+               <TextArea fx:id="questionValue" prefHeight="40.0" promptText="Answer" wrapText="true" />
+            </VBox>
+            <VBox fx:id="MCQTemplate" alignment="TOP_CENTER" layoutX="319.0" layoutY="10.0" prefWidth="300.0" spacing="5.0">
+               <Text fx:id="questionName1" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" />
+               <VBox alignment="TOP_CENTER">
+                  <RadioButton mnemonicParsing="false" text="RadioButtehgwebhgeon" />
+                  <RadioButton mnemonicParsing="false" text="RadioButton" />
+                  <CheckBox mnemonicParsing="false" text="CheckBox" />
                </VBox>
-            </children>
+            </VBox>
+            <VBox fx:id="dropdownTemplate" alignment="TOP_CENTER" layoutX="319.0" layoutY="81.0" prefWidth="300.0" spacing="5.0">
+               <Text fx:id="questionName11" strokeType="OUTSIDE" strokeWidth="0.0" text="Question:" />
+               <ComboBox prefWidth="9999.0" />
+            </VBox>
          </VBox>
-      </content>
+      </VBox>
    </ScrollPane>
 </VBox>

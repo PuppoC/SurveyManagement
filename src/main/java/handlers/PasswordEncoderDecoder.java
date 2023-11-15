@@ -1,4 +1,4 @@
-package Handlers;
+package handlers;
 
 import org.mindrot.jbcrypt.BCrypt;
 

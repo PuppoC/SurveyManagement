@@ -1,6 +1,6 @@
-package Classes;
+package classes;
 
-import Enums.QuestionType;
+import enums.QuestionType;
 
 import java.util.ArrayList;
 import java.util.List;

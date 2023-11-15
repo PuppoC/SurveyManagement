@@ -1,8 +1,8 @@
 package com.example.surveymanagement;
 
-import Classes.*;
-import Enums.QuestionType;
-import Handlers.StorageHandler;
+import classes.*;
+import enums.QuestionType;
+import handlers.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,23 +25,36 @@ import java.util.Optional;
 public class CompleteSurveyController {
 
     private Survey survey;
-    private List<Answer> allAnswers = new ArrayList<>();
+    private final List<Answer> allAnswers = new ArrayList<>();
     private User user;
 
-    public void setSurvey(Survey survey){this.survey = survey;}
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
+    }
 
 
-    @FXML Text surveyTitleText;
-    @FXML Text surveyDescriptionText;
-    @FXML VBox questionsContainer;
+    @FXML
+    Text surveyTitleText;
+    @FXML
+    Text surveyDescriptionText;
+    @FXML
+    VBox questionsContainer;
 
 
-    @FXML VBox paragraphTemplate;
-    @FXML VBox MCQTemplate;
-    @FXML VBox dropdownTemplate;
+    @FXML
+    VBox paragraphTemplate;
+    @FXML
+    VBox MCQTemplate;
+    @FXML
+    VBox dropdownTemplate;
+
+    @FXML
+    Button backButton;
+    @FXML
+    Button submitButton;
 
 
-    void addQuestion(Question question){
+    void addQuestion(Question question) {
 
         Answer answer = new Answer();
         answer.setQuestion(question);
@@ -51,20 +64,20 @@ public class CompleteSurveyController {
         template.setFillWidth(true);
         template.setSpacing(5);
         template.setPrefWidth(300);
-        template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,null,null)));
-        template.setPadding(new Insets(5,5,5,5));
+        template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+        template.setPadding(new Insets(5, 5, 5, 5));
 
         Text questionNameText = new Text();
         questionNameText.setText(question.getName());
-        questionNameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,16));
+        questionNameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR, 16));
 
         template.getChildren().add(questionNameText);
 
         Node valueToAdd;
 
-        switch (question.getType()){
+        switch (question.getType()) {
 
-            case Paragraph,Numbers -> {
+            case Paragraph, Numbers -> {
 
                 TextArea valueTextArea = new TextArea();
                 valueTextArea.setPromptText("Answer Here");
@@ -72,7 +85,7 @@ public class CompleteSurveyController {
                 valueTextArea.setPrefHeight(50);
 
                 //Number restriction
-                if (question.getType() == QuestionType.Numbers){
+                if (question.getType() == QuestionType.Numbers) {
 
                     TextFormatter<String> numberFormatter = new TextFormatter<>(change -> {
                         if (change.isContentChange()) {
@@ -100,7 +113,7 @@ public class CompleteSurveyController {
 
                 ToggleGroup toggleGroup = new ToggleGroup();
 
-                for (String value : question.getValues()){
+                for (String value : question.getValues()) {
 
                     RadioButton radio = new RadioButton();
                     radio.setText(value);
@@ -123,15 +136,15 @@ public class CompleteSurveyController {
 
                 List<String> answerList = new ArrayList<>();
 
-                for (String value : question.getValues()){
+                for (String value : question.getValues()) {
 
                     CheckBox checkBox = new CheckBox();
                     checkBox.setText(value);
 
                     checkBox.selectedProperty().addListener((observable, oldSelected, newSelected) -> {
-                        if (newSelected){
+                        if (newSelected) {
                             answerList.add(value);
-                        }else{
+                        } else {
                             answerList.remove(value);
                         }
                         answer.setValue(answerList);
@@ -175,10 +188,15 @@ public class CompleteSurveyController {
     }
 
 
-    @FXML void initialize(){
+    @FXML
+    void initialize() {
+
+        backButton.setOnAction(actionEvent -> onBackButton());
+        submitButton.setOnAction(actionEvent -> onSubmitButton());
+
         user = App.getSessionUser();
 
-        questionsContainer.getChildren().removeAll(paragraphTemplate,MCQTemplate,dropdownTemplate); // remove useless templates
+        questionsContainer.getChildren().removeAll(paragraphTemplate, MCQTemplate, dropdownTemplate); // remove useless templates
 
 
         surveyTitleText.setText(survey.getName());
@@ -189,14 +207,14 @@ public class CompleteSurveyController {
     }
 
 
-    @FXML protected void onSubmitButton() throws IOException {
+    protected void onSubmitButton() {
 
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setHeaderText("Confirm to submit response?");
 
 
         Optional<ButtonType> confirmResult = confirmAlert.showAndWait();
-        if (confirmResult.isPresent() && (confirmResult.get() == ButtonType.CANCEL)){
+        if (confirmResult.isPresent() && (confirmResult.get() == ButtonType.CANCEL)) {
             System.out.println("Submit cancelled");
             return;
         }
@@ -206,7 +224,7 @@ public class CompleteSurveyController {
         submission.setUserId(user.getId());
 
         survey.getSubmissions().add(submission);
-        StorageHandler.writeObjectToFile(survey,"Surveys/"+survey.getId().toString());
+        StorageHandler.writeObjectToFile(survey, "Surveys/" + survey.getId().toString());
 
 
         Alert submittedAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -215,11 +233,21 @@ public class CompleteSurveyController {
 
         System.out.println("Survey Submitted");
 
-        App.setRoot("surveylist");
+        try {
+            App.setRoot("surveylist");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
 
-    @FXML protected void goToSurveyList() throws IOException {App.setRoot("surveylist");}
-
+    //    @FXML protected void goToSurveyList() throws IOException {App.setRoot("surveylist");}
+    protected void onBackButton() {
+        try {
+            App.setRoot("surveylist");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

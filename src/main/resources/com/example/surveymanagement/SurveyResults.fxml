@@ -27,20 +27,16 @@
       <rowConstraints>
          <RowConstraints maxHeight="30.0" minHeight="5.0" prefHeight="27.0" vgrow="SOMETIMES" />
       </rowConstraints>
-      <children>
-         <Button mnemonicParsing="false" onAction="#goToSurveyList" prefHeight="21.0" prefWidth="600.0" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-            <graphic>
-               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@Images/back.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-            <font>
-               <Font name="System Bold" size="16.0" />
-            </font>
-         </Button>
-      </children>
+      <Button fx:id="backButton" mnemonicParsing="false" prefHeight="21.0" prefWidth="600.0" text="Back" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <Image url="@Images/back.png" />
+            </ImageView>
+         </graphic>
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+      </Button>
    </GridPane>
    <Text fx:id="surveyTitleText" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" textAlignment="CENTER">
       <font>
@@ -53,79 +49,60 @@
       </font>
    </Text>
    <TabPane tabClosingPolicy="UNAVAILABLE" tabMinWidth="300.0">
-     <tabs>
-       <Tab fx:id="individualTab" closable="false" styleClass="centered-tabs" text="Individual">
-            <content>
-               <VBox>
-                  <children>
-                     <GridPane prefWidth="920.0">
-                        <columnConstraints>
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        </columnConstraints>
-                        <rowConstraints>
-                           <RowConstraints maxHeight="30.0" minHeight="5.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                        </rowConstraints>
-                        <children>
-                           <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onNextButton" prefHeight="21.0" prefWidth="600.0" text="Next" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
-                              <graphic>
-                                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-                                    <image>
-                                       <Image url="@Images/back.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                              <font>
-                                 <Font name="System Bold" size="16.0" />
-                              </font>
-                           </Button>
-                           <Button layoutX="470.0" layoutY="6.0" mnemonicParsing="false" onAction="#onPreviousButton" prefHeight="21.0" prefWidth="600.0" text="Previous">
-                              <graphic>
-                                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                       <Image url="@Images/back.png" />
-                                    </image>
-                                 </ImageView>
-                              </graphic>
-                              <font>
-                                 <Font name="System Bold" size="16.0" />
-                              </font>
-                           </Button>
-                        </children>
-                        <VBox.margin>
-                           <Insets bottom="10.0" top="10.0" />
-                        </VBox.margin>
-                     </GridPane>
-                     <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
-                        <content>
-                           <VBox alignment="TOP_CENTER">
-                              <children>
-                                 <Text fx:id="userInfoText" layoutX="429.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
-                                    <font>
-                                       <Font name="System Italic" size="16.0" />
-                                    </font>
-                                 </Text>
-                                 <VBox fx:id="indivAnswersContainer" alignment="TOP_CENTER" fillWidth="false" spacing="10.0">
-                                    <VBox.margin>
-                                       <Insets top="20.0" />
-                                    </VBox.margin>
-                                 </VBox>
-                              </children>
-                           </VBox>
-                        </content>
-                     </ScrollPane>
-                  </children>
+      <Tab fx:id="individualTab" closable="false" styleClass="centered-tabs" text="Individual">
+         <VBox>
+            <GridPane prefWidth="920.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="30.0" minHeight="5.0" prefHeight="27.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+               <Button fx:id="nextButton" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="21.0" prefWidth="600.0" text="Next" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+                  <graphic>
+                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                        <Image url="@Images/back.png" />
+                     </ImageView>
+                  </graphic>
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font>
+               </Button>
+               <Button fx:id="prevButton" layoutX="470.0" layoutY="6.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="600.0" text="Previous">
+                  <graphic>
+                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@Images/back.png" />
+                     </ImageView>
+                  </graphic>
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font>
+               </Button>
+            </GridPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+               <VBox alignment="TOP_CENTER">
+                  <Text fx:id="userInfoText" layoutX="429.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Italic" size="16.0" />
+                     </font>
+                  </Text>
+                  <VBox fx:id="indivAnswersContainer" alignment="TOP_CENTER" fillWidth="false" spacing="10.0">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </VBox>
                </VBox>
-            </content>
-         </Tab>
-       <Tab fx:id="summaryTab" closable="false" styleClass="centered-tabs" text="Summary">
-            <content>
-               <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
-                  <content>
-                     <VBox fx:id="sumAnswersContainer" alignment="TOP_CENTER" spacing="10.0" />
-                  </content>
-               </ScrollPane>
-            </content></Tab>
-     </tabs>
+            </ScrollPane>
+         </VBox>
+      </Tab>
+      <Tab fx:id="summaryTab" closable="false" styleClass="centered-tabs" text="Summary">
+         <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+            <VBox fx:id="sumAnswersContainer" alignment="TOP_CENTER" spacing="10.0" />
+         </ScrollPane>
+      </Tab>
    </TabPane>
 </VBox>

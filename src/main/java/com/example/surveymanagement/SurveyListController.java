@@ -1,9 +1,9 @@
 package com.example.surveymanagement;
 
-import Classes.Survey;
-import Classes.User;
-import Enums.AccessLevel;
-import Handlers.StorageHandler;
+import classes.Survey;
+import classes.User;
+import enums.AccessLevel;
+import handlers.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -28,18 +28,21 @@ import java.util.*;
 
 public class SurveyListController {
 
-    @FXML VBox surveyContainer;
-    @FXML GridPane surveyTemplate;
-    @FXML Button createSurveyButton;
-//    @FXML ComboBox<SortBy> sortByComboBox;
-    @FXML TextField searchTextField;
+    @FXML
+    VBox surveyContainer;
+    @FXML
+    GridPane surveyTemplate;
+    @FXML
+    Button createSurveyButton;
+    @FXML
+    TextField searchTextField;
     private static final String imagePath = "file:src/main/resources/com/example/surveymanagement/Images/";
 
-    DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+    final DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
             .appendPattern("dd/MM/yyyy HH:mm:ss")
             .toFormatter();
 
-    private static void showNode(Node node, boolean value){
+    private static void showNode(Node node, boolean value) {
 
         node.setManaged(value);
         node.setVisible(value);
@@ -47,11 +50,11 @@ public class SurveyListController {
 
     }
 
-    private Button getButton(String text, String buttonImagePath){
+    private Button getButton(String text, String buttonImagePath) {
 
         Button button = new Button(text);
         button.setContentDisplay(ContentDisplay.TOP);
-        button.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,20));
+        button.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR, 20));
         button.setPrefWidth(800);// just to make it fill
 
         ImageView viewButtonImage = new ImageView(imagePath + buttonImagePath);
@@ -64,61 +67,58 @@ public class SurveyListController {
 
     }
 
-    @FXML public void initialize(){
+    @FXML
+    public void initialize() {
 
-        showNode(surveyTemplate,false);
+        showNode(surveyTemplate, false);
 
         User user = App.getSessionUser();
 
         assert user != null;
-        if (user.getAccess() != AccessLevel.ADMIN){
-            showNode(createSurveyButton,false);
-            GridPane.setRowIndex(searchTextField,0);
+        if (user.getAccess() != AccessLevel.ADMIN) {
+            showNode(createSurveyButton, false);
+            GridPane.setRowIndex(searchTextField, 0);
 
         }
 
-        List<Survey> allSurveys = StorageHandler.getEachObjectInFolder("Surveys",Survey.class);
+        List<Survey> allSurveys = StorageHandler.getEachObjectInFolder("Surveys", Survey.class);
 
         Map<Survey, GridPane> allSurveyTemplates = new HashMap<>();
 
-        for (Survey survey : allSurveys){
+        for (Survey survey : allSurveys) {
 
-            User creatorUser = StorageHandler.readObjectFromFile("Users/"+survey.getCreatorId(),User.class);
+            User creatorUser = StorageHandler.readObjectFromFile("Users/" + survey.getCreatorId(), User.class);
 
             GridPane template = new GridPane();
-//            template.setGridLinesVisible(true);
-
             template.setPrefHeight(80);
-//            template.setPrefSize(920,80);
-//            template.setPrefSize(,80);
-            template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY,null,null)));
-            template.setPadding(new Insets(20,20,20,20));
+            template.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, null, null)));
+            template.setPadding(new Insets(20, 20, 20, 20));
 
             Text nameText = new Text(survey.getName());
             nameText.setWrappingWidth(400);
-            nameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR,16));
+            nameText.setFont(Font.font("System", FontWeight.BOLD, FontPosture.REGULAR, 16));
 
             Text noSubmissionsText = new Text("Submissions: " + survey.getSubmissions().size());
             noSubmissionsText.setWrappingWidth(400);
-            noSubmissionsText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
+            noSubmissionsText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR, 14));
 
             Text creatorText = new Text("Created by: " + creatorUser.getUsername());
             creatorText.setWrappingWidth(400);
-            creatorText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
+            creatorText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR, 14));
 
             Text createdText = new Text("Created on: " + dateTimeFormatter.format(ZonedDateTime.ofInstant(survey.getCreatedInstant(), ZoneId.systemDefault())));
             createdText.setWrappingWidth(400);
-            createdText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR,14));
+            createdText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR, 14));
 
-            template.add(nameText,0,0,1,1);
-            template.add(noSubmissionsText,0,1,1,1);
-            template.add(creatorText,0,2,1,1);
-            template.add(createdText,0,3,1,1);
+            template.add(nameText, 0, 0, 1, 1);
+            template.add(noSubmissionsText, 0, 1, 1, 1);
+            template.add(creatorText, 0, 2, 1, 1);
+            template.add(createdText, 0, 3, 1, 1);
 
-            Button completeSurveyButton = getButton("Complete Survey","checklist.png");
-            Button resultsButton = getButton("Results","results.png");
-            Button editButton = getButton("Edit","edit.png");
-            Button deleteButton = getButton("Delete","trash.png");
+            Button completeSurveyButton = getButton("Complete Survey", "checklist.png");
+            Button resultsButton = getButton("Results", "results.png");
+            Button editButton = getButton("Edit", "edit.png");
+            Button deleteButton = getButton("Delete", "trash.png");
 
 
             completeSurveyButton.setOnAction(actionEvent -> {
@@ -128,7 +128,7 @@ public class SurveyListController {
                 completeSurveyController.setSurvey(survey);
 
                 try {
-                    App.setRootManual("completesurvey",completeSurveyController);
+                    App.setRootManual("completesurvey", completeSurveyController);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -142,7 +142,7 @@ public class SurveyListController {
                 surveyResultsController.setSurvey(survey);
 
                 try {
-                    App.setRootManual("surveyresults",surveyResultsController);
+                    App.setRootManual("surveyresults", surveyResultsController);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -157,7 +157,7 @@ public class SurveyListController {
                 editSurveyController.setDefaultSurvey(survey);
 
                 try {
-                    App.setRootManual("createsurvey",editSurveyController);
+                    App.setRootManual("createsurvey", editSurveyController);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -165,12 +165,6 @@ public class SurveyListController {
 
                 // PREFILL QUESTIONS
                 survey.getQuestions().forEach(editSurveyController::addQuestion);
-
-//                for (Question question: survey.getQuestions()){
-//
-//                    editSurveyController.addQuestion(question);
-//
-//                }
 
             });
 
@@ -183,24 +177,24 @@ public class SurveyListController {
                 boolean deleteSuccess;
 
                 Optional<ButtonType> confirmResult = confirmAlert.showAndWait();
-                if (confirmResult.isPresent() && (confirmResult.get() == ButtonType.OK)){
+                if (confirmResult.isPresent() && (confirmResult.get() == ButtonType.OK)) {
                     System.out.println("Deleting survey");
 
-                    deleteSuccess = StorageHandler.deleteFile("Surveys/"+survey.getId());
+                    deleteSuccess = StorageHandler.deleteFile("Surveys/" + survey.getId());
 
-                }else{
+                } else {
                     System.out.println("Delete survey abandoned");
                     return;
 
                 }
 
                 Alert resultAlert;
-                if (deleteSuccess){
+                if (deleteSuccess) {
 
                     resultAlert = new Alert(Alert.AlertType.INFORMATION);
                     resultAlert.setHeaderText("Survey deleted successfully!");
 
-                }else{
+                } else {
 
                     resultAlert = new Alert(Alert.AlertType.WARNING);
                     resultAlert.setHeaderText("Survey deleted unsuccessfully!");
@@ -219,23 +213,23 @@ public class SurveyListController {
 
             GridPane buttonsGrid = new GridPane();
 
-            buttonsGrid.addColumn(0,completeSurveyButton);
-            buttonsGrid.addColumn(1,resultsButton);
-            buttonsGrid.addColumn(2,editButton);
-            buttonsGrid.addColumn(3,deleteButton);
+            buttonsGrid.addColumn(0, completeSurveyButton);
+            buttonsGrid.addColumn(1, resultsButton);
+            buttonsGrid.addColumn(2, editButton);
+            buttonsGrid.addColumn(3, deleteButton);
 
 
-            if (user.getAccess() != AccessLevel.ADMIN){
+            if (user.getAccess() != AccessLevel.ADMIN) {
 
-                showNode(resultsButton,false);
-                showNode(editButton,false);
-                showNode(deleteButton,false);
+                showNode(resultsButton, false);
+                showNode(editButton, false);
+                showNode(deleteButton, false);
 
             }
 
-            template.add(buttonsGrid,1,0,1,3);
+            template.add(buttonsGrid, 1, 0, 1, 3);
 
-            allSurveyTemplates.put(survey,template);
+            allSurveyTemplates.put(survey, template);
 
             surveyContainer.getChildren().add(template);
 
@@ -248,12 +242,11 @@ public class SurveyListController {
                 Survey survey = entry.getKey();
                 GridPane template = entry.getValue();
 
-                showNode(template,survey.getName().toLowerCase().contains(changedTo.toLowerCase()));
+                showNode(template, survey.getName().toLowerCase().contains(changedTo.toLowerCase()));
 
             }
 
         });
-
 
     }
 
@@ -264,17 +257,17 @@ public class SurveyListController {
         App.setRoot("login");
 
     }
+
     @FXML
     protected void goToCreateSurvey() {
 
         // Need special, to allow controller to be accessed when editing survey
         try {
-            App.setRootManual("createsurvey",new CreateSurveyController());
+            App.setRootManual("createsurvey", new CreateSurveyController());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
     }
-
 
 }

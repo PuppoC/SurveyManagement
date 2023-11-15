@@ -1,6 +1,6 @@
 package com.example.surveymanagement;
 
-import Classes.User;
+import classes.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

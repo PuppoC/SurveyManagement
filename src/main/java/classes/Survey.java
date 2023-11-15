@@ -1,9 +1,8 @@
-package Classes;
+package classes;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class Survey {
@@ -12,7 +11,7 @@ public class Survey {
     private String name;
     private String desc;
     private List<Question> questions = new ArrayList<>();
-    private List<Submission> submissions = new ArrayList<>();
+    private final List<Submission> submissions = new ArrayList<>();
 
     private UUID creatorId;
     private Instant createdInstant;

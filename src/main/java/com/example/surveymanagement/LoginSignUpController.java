@@ -1,9 +1,9 @@
 package com.example.surveymanagement;
 
-import Classes.User;
-import Enums.AccessLevel;
-import Handlers.PasswordEncoderDecoder;
-import Handlers.StorageHandler;
+import classes.User;
+import enums.AccessLevel;
+import handlers.PasswordEncoderDecoder;
+import handlers.StorageHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 
 public class LoginSignUpController {
 
@@ -104,7 +103,7 @@ public class LoginSignUpController {
 
         }
 
-        User user = StorageHandler.readObjectFromFile(usersFolderName+"/"+userUUID.toString(),User.class);
+        User user = StorageHandler.readObjectFromFile(usersFolderName+"/"+ userUUID,User.class);
 
         // Password for this username is incorrect
         if (!PasswordEncoderDecoder.verifyPassword(loginPassword,user.getPassword())){
@@ -126,17 +125,6 @@ public class LoginSignUpController {
 
         App.setSessionUser(user);
         App.setRoot("surveylist");
-
-//        try{
-//
-//            App.setSessionUser(user);
-//            App.setRoot("surveylist");
-//
-//        } catch(IOException e){
-//
-//            System.out.println("Unable to go to landing page: " + e.getMessage());
-//
-//        }
 
     }
 

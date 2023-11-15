@@ -1,6 +1,6 @@
-package Classes;
+package classes;
 
-import Enums.AccessLevel;
+import enums.AccessLevel;
 
 import java.util.UUID;
 

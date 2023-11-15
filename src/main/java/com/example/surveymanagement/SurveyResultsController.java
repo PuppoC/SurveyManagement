@@ -1,14 +1,15 @@
 package com.example.surveymanagement;
 
-import Classes.*;
-import Enums.QuestionType;
-import Handlers.StorageHandler;
+import classes.*;
+import enums.QuestionType;
+import handlers.StorageHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
@@ -18,8 +19,8 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.beans.binding.Bindings;
+
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -34,14 +35,25 @@ public class SurveyResultsController {
         this.survey = survey;
     }
 
+
+    @FXML
+    Button backButton;
+    @FXML
+    Button nextButton;
+    @FXML
+    Button prevButton;
+
+
     @FXML
     Text surveyTitleText;
     @FXML
     Text surveyDescriptionText;
     @FXML
     Text userInfoText;
-    @FXML VBox indivAnswersContainer;
-    @FXML VBox sumAnswersContainer;
+    @FXML
+    VBox indivAnswersContainer;
+    @FXML
+    VBox sumAnswersContainer;
 
     private void resizeTextArea(TextArea textArea) {
         // Create a temporary Text node to measure the text bounds
@@ -58,8 +70,7 @@ public class SurveyResultsController {
 
     private void fillInAnswer(int index) {
 
-        if ((index < 0) || (index > (survey.getSubmissions().size()-1))){
-            System.out.println("Index out of bounds");
+        if ((index < 0) || (index > (survey.getSubmissions().size() - 1))) {// Index out of bounds check
             return;
         }
 
@@ -70,7 +81,7 @@ public class SurveyResultsController {
         User user = StorageHandler.readObjectFromFile("Users/" + submission.getUserId(), User.class);
 
 
-        userInfoText.setText(String.format("[%s/%s] Submitted by: %s", index+1, survey.getSubmissions().size(), user.getId() == null? "Deleted User" : user.getUsername()));
+        userInfoText.setText(String.format("[%s/%s] Submitted by: %s", index + 1, survey.getSubmissions().size(), user.getId() == null ? "Deleted User" : user.getUsername()));
 
 
         for (Answer answer : submission.getAnswers()) {
@@ -115,51 +126,58 @@ public class SurveyResultsController {
     @FXML
     void initialize() {
 
+        backButton.setOnAction(actionEvent -> onBackButton());
+
+        nextButton.setOnAction(actionEvent -> fillInAnswer(submissionIndex + 1));
+        prevButton.setOnAction(actionEvent -> fillInAnswer(submissionIndex - 1));
+
         surveyTitleText.setText(survey.getName());
         surveyDescriptionText.setText(survey.getDesc());
 
         //INIT INDIVIDUAL SECTION
         if (!survey.getSubmissions().isEmpty()) {
             fillInAnswer(submissionIndex);
-        }else{
+        } else {
             userInfoText.setText("No Submissions!");
         }
-
 
 
         //INIT SUMMARY SECTION
 
         //Group submissions by answers
-        Map<UUID, HashMap<Object, Object>> allQuestionAnswers = new HashMap<>();
+        Map<Question, List<Answer>> allQuestionAnswers = new HashMap<>();
 
+        for (Submission submission : survey.getSubmissions()) {
 
-        for (Submission submission : survey.getSubmissions()){
+            for (Answer answer : submission.getAnswers()) {
 
-            for (Answer answer: submission.getAnswers()){
-
-                if (answer.getValue().toString().isEmpty()){ // ignore empty answers
+                if (answer.getValue().toString().isEmpty()) { // ignore empty answers
                     continue;
                 }
 
                 Question question = answer.getQuestion();
 
-                if (allQuestionAnswers.containsKey(question.getId())){ //Question key already existing
+                List<Answer> storedAnswers = null;
 
-                    List<Answer> answerList = (List<Answer>) allQuestionAnswers.get(question.getId()).get("AnswerList");
-                    //dangerous but works
-                    answerList.add(answer);
+                for (Map.Entry<Question, List<Answer>> entry : allQuestionAnswers.entrySet()) {
+                    Question storedQuestion = entry.getKey();
 
-                }else{
+                    if (storedQuestion.getId().equals(question.getId())) {
+                        storedAnswers = entry.getValue();
+                        break;
+                    }
 
-                    HashMap<Object, Object> questionAnswerMap = new HashMap<>();
+                }
 
+                if (storedAnswers != null) { //Question key already existing
+
+                    storedAnswers.add(answer);
+
+                } else {
                     List<Answer> newAnswersList = new ArrayList<>();// New question key
                     newAnswersList.add(answer);
 
-                    questionAnswerMap.put("AnswerList", newAnswersList);
-                    questionAnswerMap.put("Question", question);
-
-                    allQuestionAnswers.put(question.getId(),questionAnswerMap);
+                    allQuestionAnswers.put(question, newAnswersList);
 
                 }
 
@@ -167,114 +185,83 @@ public class SurveyResultsController {
 
         }
 
-        for (Map.Entry<UUID, HashMap<Object, Object>> entry : allQuestionAnswers.entrySet()) {
-            UUID questionId = entry.getKey();
+        for (Map.Entry<Question, List<Answer>> entry : allQuestionAnswers.entrySet()) {
 
-            HashMap<Object, Object> questionAnswerMap = entry.getValue();
-            List<Answer> answers = (List<Answer>) questionAnswerMap.get("AnswerList");
-            Question question = (Question) questionAnswerMap.get("Question");
+            Question question = entry.getKey();
+            List<Answer> answers = entry.getValue();
 
+            if (Objects.requireNonNull(question.getType()) == QuestionType.Paragraph) {
+                VBox template = new VBox();
+                template.setFillWidth(true);
+                template.setSpacing(5);
 
+                template.setAlignment(Pos.TOP_CENTER);
 
-//            Question question = survey.getQuestionByName(questionName);
-//
-//            if (question != null){
+                Text questionNameText = new Text(question.getName());
+                questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR, 16));
 
-                if (Objects.requireNonNull(question.getType()) == QuestionType.Paragraph) {
-                    VBox template = new VBox();
-                    template.setFillWidth(true);
-                    template.setSpacing(5);
+                VBox valueContainer = new VBox();
+                valueContainer.setAlignment(Pos.TOP_CENTER);
 
-                    template.setAlignment(Pos.TOP_CENTER);
+                for (Answer answer : answers) {
 
-                    Text questionNameText = new Text(question.getName());
-                    questionNameText.setFont(Font.font("System", FontWeight.NORMAL, FontPosture.REGULAR, 16));
+                    Text answerValue = new Text(answer.getValue().toString());
+                    valueContainer.getChildren().add(answerValue);
 
-                    VBox valueContainer = new VBox();
-                    valueContainer.setAlignment(Pos.TOP_CENTER);
-
-                    for (Answer answer : answers) {
-
-                        Text answerValue = new Text(answer.getValue().toString());
-                        valueContainer.getChildren().add(answerValue);
-
-                    }
-
-                    ScrollPane templateScroll = new ScrollPane(valueContainer);
-                    templateScroll.setFitToWidth(true);
-                    templateScroll.setPrefHeight(100);
-                    templateScroll.setMinHeight(Region.USE_PREF_SIZE);
-
-                    templateScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-                    template.getChildren().addAll(questionNameText, templateScroll);
-
-                    sumAnswersContainer.getChildren().add(template);
-
-                } else {
-                    ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
-                    //sort the data
-//                        Map<Object, Long> answerCounts = answers.stream().collect(Collectors.groupingBy(Answer::getValue, Collectors.counting()));
-
-                    Map<Object, Long> answerCounts = answers.stream()
-                            .flatMap(answer -> {
-                                if (answer.getValue() instanceof List) {
-                                    return ((List<?>) answer.getValue()).stream();
-                                } else {
-                                    return Stream.of(answer.getValue());
-                                }
-                            })
-                            .collect(Collectors.groupingBy(
-                                    value -> value,
-                                    Collectors.counting()
-                            ));
-
-
-                    answerCounts.forEach((response, count) -> pieChartData.add(new PieChart.Data(response.toString(), count)));
-
-
-                    PieChart chart = new PieChart(pieChartData);
-                    chart.setTitle(question.getName());
-//                    chart.setLegendVisible(true);
-//                    chart.setLegendSide(Side.RIGHT);
-                    chart.setLabelLineLength(10);
-                    chart.setLegendVisible(false); // Hide the legend
-                    chart.getData().forEach(data -> {
-                        String percentage = String.format("%.1f%%", (data.getPieValue() / getPieTotal(chart)) * 100);
-                        data.nameProperty().bind(Bindings.concat(data.getName(), " ", percentage));
-                    });
-
-                    sumAnswersContainer.getChildren().add(chart);
                 }
 
+                ScrollPane templateScroll = new ScrollPane(valueContainer);
+                templateScroll.setFitToWidth(true);
+                templateScroll.setPrefHeight(100);
+                templateScroll.setMinHeight(Region.USE_PREF_SIZE);
 
-//            }else{
-//                System.err.println("Question not found by name! something went wrong");
+                templateScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
+                template.getChildren().addAll(questionNameText, templateScroll);
+
+                sumAnswersContainer.getChildren().add(template);
+
+            } else {
+                ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+                //sort the data
+                Map<Object, Long> answerCounts = answers.stream()
+                        .flatMap(answer -> {
+                            if (answer.getValue() instanceof List) {
+                                return ((List<?>) answer.getValue()).stream();
+                            } else {
+                                return Stream.of(answer.getValue());
+                            }
+                        })
+                        .collect(Collectors.groupingBy(
+                                value -> value,
+                                Collectors.counting()
+                        ));
+
+
+                answerCounts.forEach((response, count) -> pieChartData.add(new PieChart.Data(response.toString(), count)));
+
+                PieChart chart = new PieChart(pieChartData);
+                chart.setTitle(question.getName());
+                chart.setLabelLineLength(10);
+                chart.setLegendVisible(false); // Hide the legend
+                chart.getData().forEach(data -> {
+                    String percentage = String.format("%.1f%%", (data.getPieValue() / getPieTotal(chart)) * 100);
+                    data.nameProperty().bind(Bindings.concat(data.getName(), " ", percentage));
+                });
+
+                sumAnswersContainer.getChildren().add(chart);
             }
-
-//        }
-
+        }
 
     }
 
-    @FXML
-    protected void onNextButton(){
-        fillInAnswer(submissionIndex+1);
-
+    private void onBackButton() {
+        try {
+            App.setRoot("surveylist");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-    @FXML
-    protected void onPreviousButton(){
-        fillInAnswer(submissionIndex-1);
-
-    }
-
-    @FXML
-    protected void goToSurveyList() throws IOException {
-        App.setRoot("surveylist");
-    }
-
 
 }
