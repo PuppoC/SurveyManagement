@@ -97,7 +97,7 @@
                                              <children>
                                                 <HBox fx:id="valueTemplate" fillHeight="false">
                                                    <children>
-                                                      <TextArea prefHeight="40.0" prefWidth="9999999.0" promptText="Value" />
+                                                      <TextArea prefHeight="40.0" prefWidth="9999.0" promptText="Value" />
                                                       <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0">
                                                          <graphic>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -150,7 +150,7 @@
                         </GridPane>
                      </children>
                   </VBox>
-                  <Button fx:id="addQuestionButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onAddQuestionButton" prefHeight="30.0" prefWidth="999999.0" text="Add Question">
+                  <Button fx:id="addQuestionButton" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onAddQuestionButton" prefHeight="30.0" prefWidth="9999.0" text="Add Question">
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>

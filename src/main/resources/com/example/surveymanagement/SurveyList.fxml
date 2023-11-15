@@ -29,7 +29,7 @@
             <RowConstraints vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="999999.0" text="Logout" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+            <Button mnemonicParsing="false" onAction="#logout" prefHeight="30.0" prefWidth="9999.0" text="Logout" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -49,7 +49,7 @@
                   <Insets />
                </GridPane.margin>
             </Text>
-            <Button fx:id="createSurveyButton" layoutX="838.0" layoutY="13.0" mnemonicParsing="false" onAction="#goToCreateSurvey" prefHeight="30.0" prefWidth="999999.0" text="Create">
+            <Button fx:id="createSurveyButton" layoutX="838.0" layoutY="13.0" mnemonicParsing="false" onAction="#goToCreateSurvey" prefHeight="30.0" prefWidth="9999.0" text="Create">
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                      <image>
