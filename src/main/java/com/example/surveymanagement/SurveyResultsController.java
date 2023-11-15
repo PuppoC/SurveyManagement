@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -18,7 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
+import javafx.beans.binding.Bindings;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -107,6 +106,9 @@ public class SurveyResultsController {
 
     }
 
+    private double getPieTotal(PieChart pieChart) {
+        return pieChart.getData().stream().mapToDouble(PieChart.Data::getPieValue).sum();
+    }
 
 
     @FXML
@@ -220,9 +222,15 @@ public class SurveyResultsController {
 
 
                     PieChart chart = new PieChart(pieChartData);
-                    chart.setLegendVisible(true);
-                    chart.setLegendSide(Side.RIGHT);
                     chart.setTitle(questionName);
+//                    chart.setLegendVisible(true);
+//                    chart.setLegendSide(Side.RIGHT);
+                    chart.setLabelLineLength(10);
+                    chart.setLegendVisible(false); // Hide the legend
+                    chart.getData().forEach(data -> {
+                        String percentage = String.format("%.1f%%", (data.getPieValue() / getPieTotal(chart)) * 100);
+                        data.nameProperty().bind(Bindings.concat(data.getName(), " ", percentage));
+                    });
 
                     sumAnswersContainer.getChildren().add(chart);
                 }
