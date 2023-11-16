@@ -12,7 +12,7 @@ import java.util.UUID;
 public class CreateQuestionElements {
 
     private TextField nameTextField;
-    private UUID id;
+    private UUID id = null;
     private ComboBox<QuestionType> typeComboBox;
     private final List<TextArea> valueTextAreas;
 

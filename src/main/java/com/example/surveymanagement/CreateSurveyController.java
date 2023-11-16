@@ -462,7 +462,7 @@ public class CreateSurveyController {
     // Change question elements class format to question class format
     private static Question getQuestionFromElements(CreateQuestionElements questionElements) {
         Question question = new Question();
-        question.setId(UUID.randomUUID());
+        question.setId(questionElements.getId() == null ? UUID.randomUUID() : questionElements.getId());
         question.setName(questionElements.getNameTextField().getText());
         question.setType(questionElements.getTypeComboBox().getValue());
 
